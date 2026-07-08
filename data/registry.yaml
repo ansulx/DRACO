@@ -1,0 +1,357 @@
+# OCT Diabetic Retinopathy — Dataset Registry
+# Phase 1: data audit (no benchmarking yet)
+# Last updated: 2026-07-07
+
+project:
+  name: oct-dr-benchmark
+  focus: OCT-only diabetic retinopathy / DME
+  fundus_integration: false
+
+# Unified label schemas we map datasets onto
+label_schemas:
+  dme_3class:
+    description: Clinical DME staging from OCT (MMRDR standard)
+    classes:
+      0: { name: no_dme, label: "No DME" }
+      1: { name: nci_dme, label: "Non-center-involving DME" }
+      2: { name: ci_dme, label: "Center-involving DME" }
+
+  dme_binary:
+    description: DME present vs absent
+    classes:
+      0: { name: no_dme, label: "No DME" }
+      1: { name: dme, label: "DME present" }
+
+  dr_5grade:
+    description: ETDRS-style DR severity (fundus/UWF; rarely on OCT)
+    classes:
+      0: { name: no_dr, label: "No DR" }
+      1: { name: mild_npdr, label: "Mild NPDR" }
+      2: { name: moderate_npdr, label: "Moderate NPDR" }
+      3: { name: severe_npdr, label: "Severe NPDR" }
+      4: { name: pdr, label: "Proliferative DR" }
+
+  dr_npdr_pdr:
+    description: Coarse DR on OCT (OEFI)
+    classes:
+      0: { name: no_dr, label: "No DR" }
+      1: { name: npdr, label: "NPDR" }
+      2: { name: pdr, label: "PDR" }
+      unknown: { name: unknown, label: "Unknown (-)" }
+
+  kermany_4class:
+    description: Kermany Cell 2018 maculopathy classes
+    classes:
+      CNV: { name: cnv, label: "Choroidal neovascularization" }
+      DME: { name: dme, label: "Diabetic macular edema" }
+      DRUSEN: { name: drusen, label: "Drusen (early AMD)" }
+      NORMAL: { name: normal, label: "Normal" }
+
+  octid_5class:
+    description: OCTID disease categories
+    classes:
+      NO: { name: normal, label: "Normal" }
+      MH: { name: macular_hole, label: "Macular hole" }
+      AMD: { name: amd, label: "Age-related macular degeneration" }
+      CSR: { name: csr, label: "Central serous retinopathy" }
+      DR: { name: diabetic_retinopathy, label: "Diabetic retinopathy (not DME-specific)" }
+
+  octdl_7class:
+    description: OCTDL primary disease groups
+    classes:
+      AMD: { name: amd, label: "Age-related macular degeneration" }
+      DME: { name: dme, label: "Diabetic macular edema" }
+      ERM: { name: erm, label: "Epiretinal membrane" }
+      RAO: { name: rao, label: "Retinal artery occlusion" }
+      RVO: { name: rvo, label: "Retinal vein occlusion" }
+      VID: { name: vid, label: "Vitreomacular interface disease" }
+      NORMAL: { name: normal, label: "Normal" }
+
+  octdl_pathology:
+    description: OCTDL fine-grained pathological signs (multi-label capable)
+    values:
+      - MNV   # macular neovascular membranes
+      - DRIL  # disorganization of retinal inner layers
+      - drusen
+      - ME    # macular edema (generic)
+      - MH    # macular hole
+
+  fluid_segmentation:
+    description: Pixel-level fluid / layer annotations
+    types:
+      - IRF   # intraretinal fluid
+      - SRF   # subretinal fluid
+      - PED   # pigment epithelial detachment
+      - layer_boundaries  # 8 retinal layers (Duke)
+
+datasets:
+  # ─── TIER A: Primary DR/DME OCT benchmarks ───────────────────────────────
+
+  mmrdr:
+    tier: A
+    priority: 1
+    name: MMRDR
+    full_name: Multi-Modal Retinal images for in-depth DR analysis
+    year: 2026
+    url: https://figshare.com/articles/dataset/MMRDR/29423747
+    doi: 10.6084/m9.figshare.29423747.v2
+    license: CC BY-NC-ND 4.0
+    modality: [OCT, CFP, UWF]
+    oct_only_subset: MMRDR-OCT
+    oct_images: 2938
+    oct_patients: 2005
+    format: JPEG
+    split: { train_test_ratio: "80/20", level: patient }  # OCT split at patient level
+    devices: [Zeiss Cirrus HD-OCT 5000, Optovue RTVue-XR]
+    scan_mode: radial line, single foveal B-scan per eye (most severe pathology)
+    annotations:
+      oct:
+        - schema: dme_3class
+          field: grade
+          distribution: { no_dme: 1017, nci_dme: 280, ci_dme: 1641 }
+        - schema: laterality
+          field: lr
+          values: { 0: left, 1: right }
+      cfp_uwf:  # skip for now; documented for reference
+        - schema: dr_5grade
+        - schema: lesion_7type
+    lesion_types_cfp_uwf: [microaneurysm, hard_exudate, intraretinal_hemorrhage, vb_irma, neovascularization, vitreous_hemorrhage, retinal_detachment]
+    potential_tasks:
+      - dme_3class_classification
+      - dme_binary_classification
+      - dme_ci_vs_rest
+      - external_validation_anchor
+    notes: Primary 2026 benchmark. OCT has DME only (no DR grade on OCT). Class imbalance toward CI-DME.
+
+  oefi:
+    tier: A
+    priority: 2
+    name: OEFI
+    full_name: OCT and Eye Fundus Images for DR and DME
+    year: 2022
+    url: https://github.com/Traslational-Visual-Health-Laboratory/OCT-AND-EYE-FUNDUS-DATASET
+    license: check repository
+    modality: [OCT, fundus]
+    oct_only: true  # use OCT.csv only
+    oct_images: 1113
+    fundus_images: 1548
+    format: images + CSV
+    annotations:
+      oct:
+        - schema: dme_binary
+          field: DME
+          distribution: { no_dme: 946, dme: 167 }
+        - schema: dr_npdr_pdr
+          field: DR
+          distribution: { no_dr: 341, npdr: 119, pdr: unknown_count, unknown: "-" }
+    potential_tasks:
+      - dme_binary_classification
+      - dr_coarse_classification
+      - external_validation
+      - cross_site_generalization  # Mexico, multiple institutions
+    notes: Paired naming with fundus; ignore fundus for now. DR field has missing labels.
+
+  octdl:
+    tier: A
+    priority: 3
+    name: OCTDL
+    full_name: OCT Dataset for Image-Based Deep Learning Methods
+    year: 2024
+    url: https://ieee-dataport.org/documents/octdl-optical-coherence-tomography-dataset-image-based-deep-learning-methods
+    mendeley: https://data.mendeley.com/datasets/fpvs-8n55
+    license: CC BY 4.0
+    modality: [OCT]
+    images: 2064
+    patients: 821
+    device: Optovue Avanti RTVue XR
+    format: JPEG + OCTDL_labels.csv
+    csv_columns: [file_name, disease, subcategory, condition, patient_id, eye, sex, year, image_width, image_height]
+    annotations:
+      - schema: octdl_7class
+        field: disease
+        distribution:
+          AMD: 1231
+          DME: 147
+          ERM: 155
+          NORMAL: 332
+          RAO: 22
+          RVO: 101
+          VID: 76
+      - schema: octdl_pathology
+        field: condition
+    potential_tasks:
+      - dme_vs_other_diseases  # 7-class or binary DME
+      - pathology_condition_classification
+      - dme_with_dril_he_irf_signs
+      - combined_training_with_octid_kermany
+    notes: Rich pathology subcategories for DME (IRF, HE, hyperreflective foci, DRIL).
+
+  # ─── TIER B: Standard OCT benchmarks (DR/DME as one class) ───────────────
+
+  kermany:
+    tier: B
+    priority: 4
+    name: Kermany (Cell 2018)
+    url: https://data.mendeley.com/datasets/rscbjbr9sj/3
+    license: CC BY 4.0
+    modality: [OCT]
+    images_total: 108312  # after QC, from 207130 raw
+    patients: 4686
+    format: PNG/JPEG in class folders
+    split: { train_test: true, level: patient }
+    annotations:
+      - schema: kermany_4class
+    class_counts_train:
+      CNV: 37206
+      DME: 11349
+      DRUSEN: 8617
+      NORMAL: 51140
+    potential_tasks:
+      - dme_vs_normal
+      - dme_vs_all_pathology
+      - urgent_referral  # CNV+DME vs DRUSEN+NORMAL
+      - pretraining_source
+    warnings:
+      - Use version 3 only; v2 had patient leakage between train/test
+      - Multiple B-scans per volume; patient-level split required
+
+  octid:
+    tier: B
+    priority: 5
+    name: OCTID
+    url: https://dataverse.scholarsportal.info/dataverse/OCTID
+    doi: 10.3886/E108503V1
+    modality: [OCT]
+    images: 500+
+    resolution: 512x1024
+    scan_length: 2mm raster
+    annotations:
+      - schema: octid_5class
+        distribution: { NO: 206, MH: 102, AMD: 55, CSR: null, DR: 107 }
+    segmentation: 25 normal images with layer delineations
+    potential_tasks:
+      - dr_vs_normal_binary
+      - multi_disease_classification
+      - layer_segmentation_baseline
+    notes: DR class is not DME-graded; stages vary within class.
+
+  # ─── TIER C: Segmentation & biomarkers (DR-related) ───────────────────────
+
+  duke_dme:
+    tier: C
+    priority: 6
+    name: Duke DME Dataset
+    modality: [OCT]
+    images: 110
+    condition: severe DME
+    annotations: [8 retinal layer boundaries]
+    potential_tasks:
+      - layer_segmentation
+      - dme_severity_structure_analysis
+    notes: No classification labels; segmentation only.
+
+  retouch:
+    tier: C
+    priority: 7
+    name: RETOUCH (MICCAI 2017)
+    modality: [OCT volumes]
+    volumes: 70
+    devices: [Cirrus, Triton, Spectralis]
+    annotations: [IRF, SRF, PED]  # ME from AMD/RVO, not DME-specific
+    potential_tasks:
+      - fluid_segmentation
+      - transfer_to_dme_fluid_detection
+    notes: Fluid types relevant to DME but labels from AMD/RVO cases.
+
+  olives:
+    tier: C
+    priority: 8
+    name: OLIVES
+    url: https://zenodo.org/records/7105232
+    modality: [OCT volume, fundus, biomarkers, clinical labels]
+    fundus_images: 1268
+    oct_scans_per_fundus: 49
+    eyes: 96
+    time_series: true  # ~66 weeks treatment follow-up
+    annotations:
+      - clinical_labels: 3
+      - biomarker_labels: 16
+      - diagnosis: [DR, DME]
+    potential_tasks:
+      - biomarker_prediction_from_oct
+      - treatment_response_modeling
+      - self_supervised_oct_pretraining
+    notes: Complex multimodal time-series; high value but heavy setup.
+
+  aireadi:
+    tier: C
+    priority: 9
+    name: AI-READI
+    url: https://aireadi.org/
+    status: ongoing_2022_2026
+    participants: 4000
+    modality: [OCT, OCTA, fundus, FA, IR, FLIO, labs, CGM, etc.]
+    format: DICOM
+    devices: [Spectralis, Cirrus, Maestro2, Triton, Eidon, Aurora, FLIO]
+  # DR labels: part of broader T2DM cohort (not DR-only dataset)
+    potential_tasks:
+      - cross_device_generalization
+      - dr_screening_in_diabetes_cohort
+      - future_external_test_set
+    notes: Requires application/access; not DR-purposed but OCT-rich.
+
+  # ─── TIER D: General OCT (pretraining only; weak DR signal) ──────────────
+
+  octmnist:
+    tier: D
+    name: OCTMNIST (MedMNIST)
+    images: 109309
+    classes: 4 retinal diseases
+    dr_relevant: false
+    use: pretraining_baseline_only
+
+  retinal_oct_c8:
+    tier: D
+    name: Retinal OCT-C8
+    images: 24000
+    classes: 8 diseases
+    dr_relevant: partial
+    use: multi_disease_pretraining
+
+# Cross-dataset label harmonization map
+harmonization:
+  to_dme_binary:
+    mmrdr: { 0: 0, 1: 1, 2: 1 }
+    oefi: { 0: 0, 1: 1 }
+    octdl: { DME: 1, "*": 0 }
+    kermany: { DME: 1, NORMAL: 0, CNV: 0, DRUSEN: 0 }
+  to_dme_3class:
+    mmrdr: direct  # 0,1,2
+    oefi: null  # cannot map NCI/CI
+    octdl: null  # DME only, no staging
+  dr_on_oct:
+    mmrdr: not_available
+    oefi: partial  # NPDR/PDR only
+    octid: { DR: diabetic_retinopathy }
+
+# Recommended task priority for OCT-only DR project
+recommended_task_order:
+  - id: T1
+    task: DME 3-class classification
+    primary_dataset: mmrdr
+    metric: [accuracy, macro_f1, per_class_f1]
+  - id: T2
+    task: DME binary classification
+    datasets: [mmrdr, oefi, octdl, kermany]
+    metric: [auc, sensitivity_at_95_spec]
+  - id: T3
+    task: External validation
+    train: mmrdr
+    test: [oefi, octdl]
+  - id: T4
+    task: DME vs multi-disease
+    datasets: [octdl, kermany, octid]
+  - id: T5
+    task: Fluid/layer segmentation
+    datasets: [duke_dme, retouch]
+    deferred: true
