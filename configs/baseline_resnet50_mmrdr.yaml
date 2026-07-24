@@ -1,0 +1,23 @@
+run_name: resnet50_mmrdr
+seed: 42
+device: null
+batch_size: 32
+num_workers: 2
+num_classes: 3
+binary: false
+epochs: 40
+patience: 10
+lr: 1.0e-4
+weight_decay: 0.05
+amp: true
+
+model:
+  name: resnet50
+  pretrained: true
+  checkpoint: null
+
+data:
+  train_csv: data/processed/catalogs/mmrdr_train.csv
+  test_csv: data/processed/catalogs/mmrdr_test.csv
+  class_weights: data/processed/stats/class_weights.json
+  image_size: 224

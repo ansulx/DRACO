@@ -16,7 +16,7 @@ Datasets used in DRACO for OCT-based diabetic retinopathy / DME analysis.
 
 | Dataset | OCT images | Labels | Status | Role |
 |---------|------------|--------|--------|------|
-| **MMRDR** | 2,938 | 3-class DME | Extract pending | Primary train / benchmark |
+| **MMRDR** | 2,938 | 3-class DME | Ready (extracted) | Primary train / benchmark |
 | **OEFI** | 1,113 | Binary DME + coarse DR | Ready | External validation |
 | **OCTID** | 313 (107 DR + 206 Normal) | Disease category | Ready | Supplementary |
 | **Kermany** | 109,309 | CNV / DME / DRUSEN / NORMAL | Extract optional | Scale (optional) |

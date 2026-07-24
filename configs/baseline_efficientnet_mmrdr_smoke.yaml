@@ -1,0 +1,23 @@
+run_name: efficientnet_b0_mmrdr_smoke
+seed: 42
+device: null
+batch_size: 16
+num_workers: 0
+num_classes: 3
+binary: false
+epochs: 5
+patience: 5
+lr: 1.0e-4
+weight_decay: 0.05
+amp: true
+
+model:
+  name: efficientnet_b0
+  pretrained: true
+  checkpoint: null
+
+data:
+  train_csv: data/processed/catalogs/mmrdr_train_smoke.csv
+  test_csv: data/processed/catalogs/mmrdr_test_smoke.csv
+  class_weights: data/processed/stats/class_weights.json
+  image_size: 224

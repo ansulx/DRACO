@@ -23,6 +23,7 @@ env/
 *.pt
 *.onnx
 checkpoints/
+!checkpoints/.gitkeep
 wandb/
 .mlflow/
 runs/

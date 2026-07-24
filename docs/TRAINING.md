@@ -1,100 +1,82 @@
 # Training & Methodology
 
-Model development plan for DRACO OCT branch.
+Model development for DRACO OCT branch (A4000 / CUDA).
 
 ---
 
 ## Objective
 
-Beat or match **2026 SOTA** on OCT-based DME classification, with strong **external validation** on OEFI.
+Beat or match 2026 SOTA on OCT-based DME classification, with strong external validation on OEFI.
 
 ---
 
-## Primary task
+## Tasks
 
 | Task | Classes | Dataset | Metric |
 |------|---------|---------|--------|
 | **T1 — DME 3-class** | No / NCI / CI | MMRDR-OCT | Accuracy, macro-F1, per-class F1 |
 | **T2 — DME binary** | No / Yes | MMRDR → OEFI | AUC, sensitivity @ 95% specificity |
 
-Secondary: DR coarse classification on OEFI (0 / NPDR / PDR).
+---
+
+## How to train
+
+```bash
+# Full A4000 run (EfficientNet)
+python draco/train.py --config configs/baseline_efficientnet_mmrdr.yaml
+
+# ResNet-50 (MMRDR paper baseline)
+python draco/train.py --config configs/baseline_resnet50_mmrdr.yaml
+
+# RETFound ViT-L (set checkpoint after HF access)
+python draco/train.py --config configs/retfound_mmrdr.yaml
+
+# Evaluate + OEFI external
+python draco/evaluate.py --checkpoint checkpoints/efficientnet_b0_mmrdr/best.pt
+```
+
+Smoke configs (`*_smoke.yaml`) use a 240/116 stratified subset for CI / CPU debugging.
 
 ---
 
-## Models to benchmark
+## Models
 
-| Tier | Model | Type | Notes |
-|------|-------|------|-------|
-| Baseline | EfficientNet-B0 | CNN | Strong on small medical data |
-| Baseline | ResNet-50 / ViT-L | ImageNet | MMRDR paper baselines |
-| Foundation | RETFound (OCT weights) | MAE ViT | Nature 2023, OCT fine-tune |
-| Foundation | OCTCube-M | 3D OCT | If volumes available |
-| Foundation | KeepFIT V2 | Vision-language | OCT modality |
-| Foundation | FLAIR | Vision-language | Weaker on OCT per MMRDR |
+| Tier | Config | Notes |
+|------|--------|-------|
+| Baseline | `baseline_efficientnet_mmrdr.yaml` | A4000: batch 32, AMP |
+| Baseline | `baseline_resnet50_mmrdr.yaml` | Align with MMRDR table |
+| Foundation | `retfound_mmrdr.yaml` | ViT-L; batch 8; gated OCT weights optional |
 
----
+### RETFound OCT weights
 
-## Training protocol
+1. Request access: [RETFound_mae_natureOCT](https://huggingface.co/YukunZhou/RETFound_mae_natureOCT) or [monish563/RETFOUND](https://huggingface.co/monish563/RETFOUND)
+2. `huggingface-cli login`
+3. Download to `checkpoints/weights/RETFound_oct.pth`
+4. Set `model.checkpoint` in `configs/retfound_mmrdr.yaml`
 
-### Phase A — Reproduce baselines (MMRDR official split)
-
-1. Fine-tune each model on MMRDR-OCT train
-2. Evaluate on MMRDR-OCT test
-3. Compare to published MMRDR numbers (RETFound ~0.90 ACC on DME)
-
-### Phase B — External validation
-
-1. Best model from Phase A
-2. Zero-shot or fine-tuned evaluation on OEFI-OCT (binary DME)
-3. Report generalization gap (MMRDR test → OEFI test)
-
-### Phase C — Ablation (optional)
-
-- With vs without OCTID supplementary data
-- Binary vs 3-class heads
-- Input resolution (224 vs 512)
+Without gated access the trainer uses ImageNet ViT-L as architecture stand-in (not true RETFound).
 
 ---
 
-## Hyperparameters (starting point)
+## Defaults (A4000 ~16 GB)
 
-| Parameter | Value |
-|-----------|-------|
-| Optimizer | AdamW |
-| LR | 1e-4 to 5e-3 (model-dependent) |
-| Batch size | 16–32 (GPU memory) |
-| Epochs | 50 with early stopping |
-| Loss | Cross-entropy (class weights for imbalance) |
-| Seed | Fixed for reproducibility |
-
-Foundation models: follow official fine-tune recipes (layer decay, linear probe vs full fine-tune).
-
----
-
-## Class imbalance
-
-MMRDR DME distribution is skewed toward CI-DME (~56%). Use:
-
-- Weighted cross-entropy or focal loss
-- Report per-class metrics, not accuracy alone
-- Confusion matrix for NCI vs CI errors (clinical impact)
-
----
-
-## Fundus integration (future)
-
-Fundus pipeline runs separately. Planned fusion strategies:
-
-- Late fusion (ensemble predictions)
-- Cross-modal foundation model (OCTCube-IR style)
-
-Not in current training scope.
+| Param | CNN | RETFound (official MAE recipe) |
+|-------|-----|--------------------------------|
+| Input | 224 | 224 |
+| Batch | 32 | 8 |
+| Optimizer | AdamW | AdamW + layer_decay 0.65 |
+| LR | 1e-4 | blr 5e-3 → peak ≈ 1.56e-4 |
+| Schedule | constant | cosine + 10-epoch warmup |
+| Head warmup | — | 5 epochs (head only) |
+| Epochs | 40 + early stop | 50 + early stop (patience 15) |
+| Loss | Weighted CE | Weighted CE |
+| AMP | yes | yes |
 
 ---
 
 ## Reproducibility
 
-- Fixed random seeds
-- Log configs per run (YAML)
-- Save checkpoints to `checkpoints/` (gitignored)
-- Track experiments in `docs/RESULTS.md`
+- Seed 42
+- Config copied into `checkpoints/<run_name>/config.yaml`
+- Metrics in `best_metrics.json` / `eval_report.json`
+- Log summary in [RESULTS.md](RESULTS.md)

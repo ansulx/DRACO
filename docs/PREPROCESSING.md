@@ -9,84 +9,69 @@ How raw OCT data is prepared before training in DRACO.
 ```
 Raw OCT (JPEG)
     │
-    ├─► Quality filter (optional — exclude unreadable scans)
+    ├─► Catalog index (path + label CSV) — no image duplication
     │
-    ├─► Resize / pad → model input size (e.g. 512×512 or 224×224)
+    ├─► Resize / crop → 224×224
     │
-    ├─► Normalize → ImageNet stats or dataset-specific mean/std
+    ├─► Normalize → ImageNet mean/std
     │
-    ├─► Label mapping → unified schema per task
+    ├─► Label mapping → task schema
     │
-    └─► Split enforcement → patient-level, no leakage
+    └─► Split enforcement → official MMRDR train/test; OEFI external only
 ```
 
 ---
 
-## Image preprocessing
-
-| Step | Detail |
-|------|--------|
-| **Format** | JPEG B-scans (MMRDR, OEFI, OCTID, Kermany) |
-| **Resize** | Preserve aspect ratio or center-crop to square; match foundation model input (RETFound: 224 or 512) |
-| **Normalization** | ImageNet mean/std for transfer learning; per-dataset stats optional for domain shift analysis |
-| **Augmentation (train)** | Horizontal flip (careful with OCT orientation), slight brightness/contrast, optional random crop |
-
-OCT B-scans are **not** naturally symmetric — augmentation policy will be validated against clinical convention.
-
----
-
-## Label harmonization
-
-Different datasets use incompatible labels. Map only when intentional:
-
-### Binary DME (for cross-dataset experiments)
-
-| Source | Positive (DME=1) | Negative (DME=0) |
-|--------|------------------|------------------|
-| MMRDR | grade 1 or 2 | grade 0 |
-| OEFI | DME=1 | DME=0 |
-| Kermany | class DME | CNV, DRUSEN, NORMAL |
-
-### 3-class DME
-
-Only **MMRDR** supports native 3-class labels. Do not force-map OEFI or Kermany.
-
-### DR on OCT
-
-Only **OEFI** has partial DR labels on OCT. Exclude `DR = '-'` for supervised DR tasks.
-
----
-
-## Split rules
-
-| Rule | Why |
-|------|-----|
-| **Patient-level splits** | Multiple slices per eye/patient in Kermany; MMRDR OCT split is patient-level |
-| **No cross-dataset train+test overlap** | MMRDR train → OEFI test for honest generalization |
-| **Official MMRDR split** | Use provided train/test for benchmark comparability |
-
----
-
-## Output format (planned)
-
-```
-data/processed/
-├── mmrdr_oct/
-│   ├── train/
-│   ├── test/
-│   └── labels.csv
-└── oefi_oct/
-    └── test/
-```
-
----
-
-## Scripts
+## Actual implementation
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/inventory_datasets.py` | Scan zips and extracted folders |
-| `scripts/explore_local_data.py` | Label counts, image stats, missing files |
-| `scripts/download_datasets.py` | Fetch MMRDR / OEFI (optional) |
+| `scripts/extract_mmrdr_oct.py` | Merge Figshare parts and extract `MMRDR-OCT` only |
+| `scripts/build_catalogs.py` | Write processed catalog CSVs + class weights |
+| `draco/data/datasets.py` | PyTorch `CatalogDataset` + DataLoader |
+| `draco/data/transforms.py` | Train / eval transforms |
 
-Preprocessing scripts (`preprocess_*.py`) — **to be added** in Phase 2.
+### Output layout
+
+```
+data/processed/
+  catalogs/
+    mmrdr_train.csv
+    mmrdr_test.csv
+    oefi_external.csv
+    octid_supplement.csv
+  stats/
+    class_weights.json
+    image_stats.json
+```
+
+CSV columns: `path, label, label_name, split, dataset` (+ optional eye/dr).
+
+---
+
+## Image transforms
+
+| Stage | Transform |
+|-------|-----------|
+| Train | Resize 256 → RandomCrop 224 → ColorJitter → ImageNet normalize |
+| Eval | Resize 224 → CenterCrop 224 → ImageNet normalize |
+| Flip | **Off** by default (OCT laterality) |
+
+---
+
+## Label rules
+
+| Task | Source | Mapping |
+|------|--------|---------|
+| **T1 (primary)** | MMRDR | grade `0/1/2` as-is |
+| **T2 (external)** | OEFI | binary DME `0/1`; 3-class softmax remapped as `P(DME)=P1+P2` |
+| Class weights | MMRDR train | inverse frequency in `class_weights.json` |
+
+---
+
+## Rebuild catalogs
+
+```bash
+python scripts/extract_mmrdr_oct.py --keep-staging   # once
+python scripts/build_catalogs.py
+```

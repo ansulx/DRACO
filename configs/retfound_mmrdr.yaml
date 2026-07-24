@@ -1,0 +1,36 @@
+# RETFound OCT fine-tune — official MAE recipe adapted for MMRDR DME
+# Ref: rmaphoh/RETFound_MAE main_finetune.py
+#   blr=5e-3, layer_decay=0.65, warmup=10, wd=0.05, epochs=50
+# Actual peak LR = blr * batch_size / 256 = 5e-3 * 8 / 256 ≈ 1.56e-4
+# Previous failed run used flat lr=5e-4 (3× higher, no LRD) and collapsed.
+
+run_name: retfound_mmrdr_v2
+seed: 42
+device: null
+batch_size: 8
+num_workers: 2
+num_classes: 3
+binary: false
+epochs: 50
+patience: 15
+blr: 5.0e-3
+lr: null
+layer_decay: 0.65
+warmup_epochs: 10
+min_lr: 1.0e-6
+cosine: true
+# Train head first so class weights don't trash encoder early
+head_warmup_epochs: 5
+weight_decay: 0.05
+amp: true
+
+model:
+  name: retfound
+  pretrained: false
+  checkpoint: checkpoints/weights/RETFound_oct.pth
+
+data:
+  train_csv: data/processed/catalogs/mmrdr_train.csv
+  test_csv: data/processed/catalogs/mmrdr_test.csv
+  class_weights: data/processed/stats/class_weights.json
+  image_size: 224
