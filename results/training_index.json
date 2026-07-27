@@ -1,0 +1,251 @@
+[
+  {
+    "run_name": "efficientnet_b0_mmrdr",
+    "files": [
+      "config.yaml",
+      "best_metrics.json",
+      "eval_report.json"
+    ],
+    "best_epoch": 28,
+    "mmrdr": {
+      "accuracy": 0.7935943060498221,
+      "macro_f1": 0.6778893603305441,
+      "per_class_f1": {
+        "0": 0.8528678304239401,
+        "1": 0.32558139534883723,
+        "2": 0.8552188552188552
+      }
+    },
+    "oefi": {
+      "accuracy": 0.7421383647798742,
+      "f1": 0.49023090586145646,
+      "n": 1113,
+      "positives": 167,
+      "negatives": 946,
+      "auc": 0.7612860958843412,
+      "sensitivity_at_95_spec": 0.005988023952095809
+    },
+    "config_summary": {
+      "model": "efficientnet_b0",
+      "batch_size": 32,
+      "epochs": 40,
+      "loss": "ce",
+      "blr": null,
+      "lr": 0.0001
+    }
+  },
+  {
+    "run_name": "efficientnet_b0_mmrdr_smoke",
+    "files": [
+      "config.yaml",
+      "best_metrics.json",
+      "eval_report.json"
+    ],
+    "best_epoch": 5,
+    "mmrdr": {
+      "accuracy": 0.33620689655172414,
+      "macro_f1": 0.28670634920634924,
+      "per_class_f1": {
+        "0": 0.21428571428571427,
+        "1": 0.4375,
+        "2": 0.20833333333333334
+      }
+    },
+    "oefi": {
+      "accuracy": 0.4348607367475292,
+      "f1": 0.32,
+      "n": 1113,
+      "positives": 167,
+      "negatives": 946,
+      "auc": 0.6785994606980542,
+      "sensitivity_at_95_spec": 0.0
+    },
+    "config_summary": {
+      "model": "efficientnet_b0",
+      "batch_size": 16,
+      "epochs": 5,
+      "loss": "ce",
+      "blr": null,
+      "lr": 0.0001
+    }
+  },
+  {
+    "run_name": "resnet50_mmrdr",
+    "files": [
+      "config.yaml",
+      "best_metrics.json",
+      "eval_report.json"
+    ],
+    "best_epoch": 38,
+    "mmrdr": {
+      "accuracy": 0.8345195729537367,
+      "macro_f1": 0.7066404055289821,
+      "per_class_f1": {
+        "0": 0.8997772828507795,
+        "1": 0.34951456310679613,
+        "2": 0.8706293706293706
+      }
+    },
+    "oefi": {
+      "accuracy": 0.949685534591195,
+      "f1": 0.8453038674033149,
+      "n": 1113,
+      "positives": 167,
+      "negatives": 946,
+      "auc": 0.9683286703548505,
+      "sensitivity_at_95_spec": 0.9341317365269461
+    },
+    "config_summary": {
+      "model": "resnet50",
+      "batch_size": 32,
+      "epochs": 40,
+      "loss": "ce",
+      "blr": null,
+      "lr": 0.0001
+    }
+  },
+  {
+    "run_name": "retfound_mmrdr",
+    "files": [
+      "config.yaml",
+      "best_metrics.json",
+      "eval_report.json"
+    ],
+    "best_epoch": 1,
+    "mmrdr": {
+      "accuracy": 0.06405693950177936,
+      "macro_f1": 0.04013377926421405,
+      "per_class_f1": {
+        "0": 0.0,
+        "1": 0.12040133779264214,
+        "2": 0.0
+      }
+    },
+    "oefi": {
+      "accuracy": 0.1500449236298293,
+      "f1": 0.2609375,
+      "n": 1113,
+      "positives": 167,
+      "negatives": 946,
+      "auc": 0.6675507336278816,
+      "sensitivity_at_95_spec": 0.19161676646706588
+    },
+    "config_summary": {
+      "model": "retfound",
+      "batch_size": 8,
+      "epochs": 50,
+      "loss": "ce",
+      "blr": null,
+      "lr": 0.0005
+    }
+  },
+  {
+    "run_name": "retfound_mmrdr_focal",
+    "files": [
+      "config.yaml",
+      "best_metrics.json",
+      "eval_report.json"
+    ],
+    "best_epoch": 33,
+    "mmrdr": {
+      "accuracy": 0.8896797153024911,
+      "macro_f1": 0.769333599917037,
+      "per_class_f1": {
+        "0": 0.9320843091334895,
+        "1": 0.46153846153846156,
+        "2": 0.9143780290791599
+      }
+    },
+    "oefi": {
+      "accuracy": 0.9757412398921833,
+      "f1": 0.9221902017291066,
+      "n": 1113,
+      "positives": 167,
+      "negatives": 946,
+      "auc": 0.9941765517590611,
+      "sensitivity_at_95_spec": 0.9880239520958084
+    },
+    "config_summary": {
+      "model": "retfound",
+      "batch_size": 8,
+      "epochs": 50,
+      "loss": {
+        "gamma": 2.0,
+        "label_smoothing": 0.05,
+        "name": "focal"
+      },
+      "blr": 0.005,
+      "lr": null
+    }
+  },
+  {
+    "run_name": "retfound_mmrdr_smoke",
+    "files": [
+      "config.yaml",
+      "best_metrics.json",
+      "eval_report.json"
+    ],
+    "best_epoch": 1,
+    "mmrdr": {
+      "accuracy": 0.3103448275862069,
+      "macro_f1": 0.15789473684210525,
+      "per_class_f1": {
+        "0": 0.0,
+        "1": 0.47368421052631576,
+        "2": 0.0
+      }
+    },
+    "oefi": {
+      "accuracy": 0.1500449236298293,
+      "f1": 0.2609375,
+      "n": 1113,
+      "positives": 167,
+      "negatives": 946,
+      "auc": 0.47489270929599575,
+      "sensitivity_at_95_spec": 0.09580838323353294
+    },
+    "config_summary": {
+      "model": "retfound",
+      "batch_size": 4,
+      "epochs": 1,
+      "loss": "ce",
+      "blr": null,
+      "lr": 0.0005
+    }
+  },
+  {
+    "run_name": "retfound_mmrdr_v2",
+    "files": [
+      "config.yaml",
+      "best_metrics.json",
+      "eval_report.json"
+    ],
+    "best_epoch": 19,
+    "mmrdr": {
+      "accuracy": 0.8896797153024911,
+      "macro_f1": 0.7838400173781458,
+      "per_class_f1": {
+        "0": 0.929384965831435,
+        "1": 0.5057471264367817,
+        "2": 0.9163879598662207
+      }
+    },
+    "oefi": {
+      "accuracy": 0.9703504043126685,
+      "f1": 0.9037900874635568,
+      "n": 1113,
+      "positives": 167,
+      "negatives": 946,
+      "auc": 0.9936764947905458,
+      "sensitivity_at_95_spec": 0.9700598802395209
+    },
+    "config_summary": {
+      "model": "retfound",
+      "batch_size": 8,
+      "epochs": 50,
+      "loss": "ce",
+      "blr": 0.005,
+      "lr": null
+    }
+  }
+]
