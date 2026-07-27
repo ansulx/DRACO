@@ -1,0 +1,49 @@
+{
+  "checkpoint": "checkpoints\\retfound_mmrdr_v2\\best.pt",
+  "device": "cuda",
+  "mmrdr": {
+    "accuracy": 0.8896797153024911,
+    "macro_f1": 0.7838400173781458,
+    "per_class_f1": {
+      "0": 0.929384965831435,
+      "1": 0.5057471264367817,
+      "2": 0.9163879598662207
+    },
+    "confusion_matrix": [
+      [
+        204,
+        7,
+        3
+      ],
+      [
+        5,
+        22,
+        9
+      ],
+      [
+        16,
+        22,
+        274
+      ]
+    ],
+    "n": 562
+  },
+  "mmrdr_binary_remapped": {
+    "accuracy": 0.9412811387900356,
+    "f1": 0.9521044992743106,
+    "n": 562,
+    "positives": 348,
+    "negatives": 214,
+    "auc": 0.9895665485014502,
+    "sensitivity_at_95_spec": 0.9367816091954023
+  },
+  "oefi": {
+    "accuracy": 0.9703504043126685,
+    "f1": 0.9037900874635568,
+    "n": 1113,
+    "positives": 167,
+    "negatives": 946,
+    "auc": 0.9936764947905458,
+    "sensitivity_at_95_spec": 0.9700598802395209
+  }
+}

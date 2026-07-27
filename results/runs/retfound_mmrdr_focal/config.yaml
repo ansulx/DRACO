@@ -1,0 +1,31 @@
+amp: true
+batch_size: 8
+binary: false
+blr: 0.005
+cosine: true
+data:
+  class_weights: data/processed/stats/class_weights.json
+  image_size: 224
+  test_csv: data/processed/catalogs/mmrdr_test.csv
+  train_csv: data/processed/catalogs/mmrdr_train.csv
+device: null
+epochs: 50
+head_warmup_epochs: 5
+layer_decay: 0.65
+loss:
+  gamma: 2.0
+  label_smoothing: 0.05
+  name: focal
+lr: null
+min_lr: 1.0e-06
+model:
+  checkpoint: checkpoints/weights/RETFound_oct.pth
+  name: retfound
+  pretrained: false
+num_classes: 3
+num_workers: 2
+patience: 15
+run_name: retfound_mmrdr_focal
+seed: 42
+warmup_epochs: 10
+weight_decay: 0.05

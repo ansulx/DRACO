@@ -1,0 +1,49 @@
+{
+  "checkpoint": "checkpoints\\efficientnet_b0_mmrdr\\best.pt",
+  "device": "cuda",
+  "mmrdr": {
+    "accuracy": 0.7935943060498221,
+    "macro_f1": 0.6778893603305441,
+    "per_class_f1": {
+      "0": 0.8528678304239401,
+      "1": 0.32558139534883723,
+      "2": 0.8552188552188552
+    },
+    "confusion_matrix": [
+      [
+        171,
+        26,
+        17
+      ],
+      [
+        4,
+        21,
+        11
+      ],
+      [
+        12,
+        46,
+        254
+      ]
+    ],
+    "n": 562
+  },
+  "mmrdr_binary_remapped": {
+    "accuracy": 0.896797153024911,
+    "f1": 0.919889502762431,
+    "n": 562,
+    "positives": 348,
+    "negatives": 214,
+    "auc": 0.9629726608658288,
+    "sensitivity_at_95_spec": 0.8304597701149425
+  },
+  "oefi": {
+    "accuracy": 0.7421383647798742,
+    "f1": 0.49023090586145646,
+    "n": 1113,
+    "positives": 167,
+    "negatives": 946,
+    "auc": 0.7612860958843412,
+    "sensitivity_at_95_spec": 0.005988023952095809
+  }
+}

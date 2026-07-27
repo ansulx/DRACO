@@ -1,0 +1,49 @@
+{
+  "checkpoint": "checkpoints\\retfound_mmrdr_smoke\\best.pt",
+  "device": "cpu",
+  "mmrdr": {
+    "accuracy": 0.06405693950177936,
+    "macro_f1": 0.04013377926421405,
+    "per_class_f1": {
+      "0": 0.0,
+      "1": 0.12040133779264214,
+      "2": 0.0
+    },
+    "confusion_matrix": [
+      [
+        0,
+        214,
+        0
+      ],
+      [
+        0,
+        36,
+        0
+      ],
+      [
+        0,
+        312,
+        0
+      ]
+    ],
+    "n": 562
+  },
+  "mmrdr_binary_remapped": {
+    "accuracy": 0.6192170818505338,
+    "f1": 0.7648351648351648,
+    "n": 562,
+    "positives": 348,
+    "negatives": 214,
+    "auc": 0.45842061445912563,
+    "sensitivity_at_95_spec": 0.02586206896551724
+  },
+  "oefi": {
+    "accuracy": 0.1500449236298293,
+    "f1": 0.2609375,
+    "n": 1113,
+    "positives": 167,
+    "negatives": 946,
+    "auc": 0.47489270929599575,
+    "sensitivity_at_95_spec": 0.09580838323353294
+  }
+}

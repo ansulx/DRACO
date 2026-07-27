@@ -27,6 +27,7 @@ checkpoints/
 wandb/
 .mlflow/
 runs/
+!results/runs/
 logs/
 
 # OS / IDE

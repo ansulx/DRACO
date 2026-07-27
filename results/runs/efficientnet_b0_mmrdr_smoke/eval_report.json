@@ -1,0 +1,49 @@
+{
+  "checkpoint": "checkpoints\\efficientnet_b0_mmrdr_smoke\\best.pt",
+  "device": "cpu",
+  "mmrdr": {
+    "accuracy": 0.18683274021352314,
+    "macro_f1": 0.20063919657419113,
+    "per_class_f1": {
+      "0": 0.32679738562091504,
+      "1": 0.11814345991561181,
+      "2": 0.1569767441860465
+    },
+    "confusion_matrix": [
+      [
+        50,
+        161,
+        3
+      ],
+      [
+        6,
+        28,
+        2
+      ],
+      [
+        36,
+        249,
+        27
+      ]
+    ],
+    "n": 562
+  },
+  "mmrdr_binary_remapped": {
+    "accuracy": 0.6352313167259787,
+    "f1": 0.7496947496947497,
+    "n": 562,
+    "positives": 348,
+    "negatives": 214,
+    "auc": 0.6799736813836071,
+    "sensitivity_at_95_spec": 0.14080459770114942
+  },
+  "oefi": {
+    "accuracy": 0.4348607367475292,
+    "f1": 0.32,
+    "n": 1113,
+    "positives": 167,
+    "negatives": 946,
+    "auc": 0.6785994606980542,
+    "sensitivity_at_95_spec": 0.0
+  }
+}
