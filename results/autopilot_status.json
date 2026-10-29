@@ -1,0 +1,203 @@
+{
+  "run_id": "20260831_174904",
+  "started_at": "2026-08-31T12:19:04Z",
+  "phase": "complete",
+  "jobs": [
+    {
+      "id": "gdp_full",
+      "status": "ok",
+      "started_at": "2026-08-31T12:19:22Z",
+      "elapsed_s": 73.5,
+      "metrics": {
+        "accuracy": 0.795,
+        "macro_f1": 0.7922525398393758,
+        "per_class_f1": {
+          "0": 0.8161434977578476,
+          "1": 0.768361581920904
+        },
+        "confusion_matrix": [
+          [
+            91,
+            20
+          ],
+          [
+            21,
+            68
+          ]
+        ],
+        "n": 200,
+        "f1": 0.768361581920904,
+        "positives": 89,
+        "negatives": 111,
+        "auc": 0.8548436076525965,
+        "sensitivity_at_95_spec": 0.5168539325842697,
+        "epoch": 7,
+        "train_loss": 0.423237247467041,
+        "lr": 0.0001
+      },
+      "finished_at": "2026-08-31T12:20:35Z"
+    },
+    {
+      "id": "combined_full",
+      "status": "ok",
+      "started_at": "2026-08-31T12:20:35Z",
+      "elapsed_s": 91.1,
+      "metrics": {
+        "accuracy": 0.57,
+        "macro_f1": 0.562608076492727,
+        "per_class_f1": {
+          "0": 0.5057471264367817,
+          "1": 0.6194690265486725
+        },
+        "confusion_matrix": [
+          [
+            66,
+            94
+          ],
+          [
+            35,
+            105
+          ]
+        ],
+        "n": 300,
+        "f1": 0.6194690265486725,
+        "positives": 140,
+        "negatives": 160,
+        "auc": 0.6065178571428571,
+        "sensitivity_at_95_spec": 0.05714285714285714,
+        "epoch": 10,
+        "train_loss": 0.5256189121990591,
+        "lr": 0.0001
+      },
+      "finished_at": "2026-08-31T12:22:06Z"
+    }
+  ],
+  "cross_evals": [
+    {
+      "label": "gdp_model_on_gd_test",
+      "status": "ok",
+      "report": {
+        "checkpoint": "C:\\Users\\HP\\OneDrive\\Desktop\\OCT\\checkpoints\\glauco_efficientnet_harvard_gdp_full\\best.pt",
+        "device": "cuda",
+        "epoch": 7,
+        "num_classes": 2,
+        "harvard_gd_test": {
+          "accuracy": 0.22,
+          "f1": 0.2641509433962264,
+          "n": 100,
+          "positives": 51,
+          "negatives": 49,
+          "auc": 0.12284913965586236,
+          "sensitivity_at_95_spec": 0.0,
+          "threshold": 0.5,
+          "sensitivity": 0.27450980392156865,
+          "specificity": 0.16326530612244897,
+          "ppv": 0.2545454545454545,
+          "npv": 0.17777777777777778,
+          "confusion_matrix": [
+            [
+              8,
+              41
+            ],
+            [
+              37,
+              14
+            ]
+          ],
+          "average_precision": 0.3385202546976376,
+          "brier": 0.7318534028380467,
+          "sensitivity_at_85_spec": 0.0,
+          "threshold_at_85_spec": 1.0,
+          "sensitivity_at_90_spec": 0.0,
+          "threshold_at_90_spec": 1.0,
+          "threshold_at_95_spec": 1.0
+        }
+      }
+    },
+    {
+      "label": "combined_model_on_gdp_test",
+      "status": "ok",
+      "report": {
+        "checkpoint": "C:\\Users\\HP\\OneDrive\\Desktop\\OCT\\checkpoints\\glauco_efficientnet_harvard_combined_full\\best.pt",
+        "device": "cuda",
+        "epoch": 10,
+        "num_classes": 2,
+        "harvard_gdp_test": {
+          "accuracy": 0.63,
+          "f1": 0.6666666666666666,
+          "n": 200,
+          "positives": 89,
+          "negatives": 111,
+          "auc": 0.7572628808583864,
+          "sensitivity_at_95_spec": 0.2696629213483146,
+          "threshold": 0.5,
+          "sensitivity": 0.8314606741573034,
+          "specificity": 0.46846846846846846,
+          "ppv": 0.556390977443609,
+          "npv": 0.7761194029850746,
+          "confusion_matrix": [
+            [
+              52,
+              59
+            ],
+            [
+              15,
+              74
+            ]
+          ],
+          "average_precision": 0.7167852316828123,
+          "brier": 0.28447688369966484,
+          "sensitivity_at_85_spec": 0.4943820224719101,
+          "threshold_at_85_spec": 0.984404981136322,
+          "sensitivity_at_90_spec": 0.4044943820224719,
+          "threshold_at_90_spec": 0.994415283203125,
+          "threshold_at_95_spec": 0.9989100694656372
+        }
+      }
+    },
+    {
+      "label": "combined_model_on_gd_test",
+      "status": "ok",
+      "report": {
+        "checkpoint": "C:\\Users\\HP\\OneDrive\\Desktop\\OCT\\checkpoints\\glauco_efficientnet_harvard_combined_full\\best.pt",
+        "device": "cuda",
+        "epoch": 10,
+        "num_classes": 2,
+        "harvard_gd_test": {
+          "accuracy": 0.45,
+          "f1": 0.5299145299145299,
+          "n": 100,
+          "positives": 51,
+          "negatives": 49,
+          "auc": 0.33013205282112845,
+          "sensitivity_at_95_spec": 0.0,
+          "threshold": 0.5,
+          "sensitivity": 0.6078431372549019,
+          "specificity": 0.2857142857142857,
+          "ppv": 0.4696969696969697,
+          "npv": 0.4117647058823529,
+          "confusion_matrix": [
+            [
+              14,
+              35
+            ],
+            [
+              20,
+              31
+            ]
+          ],
+          "average_precision": 0.4042032755808406,
+          "brier": 0.5077035437741025,
+          "sensitivity_at_85_spec": 0.0196078431372549,
+          "threshold_at_85_spec": 0.9999834299087524,
+          "sensitivity_at_90_spec": 0.0,
+          "threshold_at_90_spec": 1.0,
+          "threshold_at_95_spec": 1.0
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "updated_at": "2026-08-31T12:22:42Z",
+  "finished_at": "2026-08-31T12:22:42Z"
+}

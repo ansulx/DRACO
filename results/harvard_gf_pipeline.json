@@ -1,0 +1,16 @@
+{
+  "updated_at": "2026-09-01T06:56:05Z",
+  "phase": "complete",
+  "catalog": {"train": 2100, "val": 300, "test": 900},
+  "training": {
+    "run_name": "glauco_efficientnet_harvard_gf_full",
+    "best_epoch": 25,
+    "val_auc": 0.8378
+  },
+  "official_test": {
+    "auc": 0.8377,
+    "accuracy": 0.756,
+    "sensitivity_at_95_spec": 0.5685,
+    "report": "checkpoints/glauco_efficientnet_harvard_gf_full/eval_official_test.json"
+  }
+}

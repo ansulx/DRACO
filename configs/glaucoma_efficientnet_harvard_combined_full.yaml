@@ -1,0 +1,26 @@
+# GLAUCO — EfficientNet on combined Harvard-GD + GDP train (1,200 patients)
+run_name: glauco_efficientnet_harvard_combined_full
+modality: rnflt
+binary: true
+num_classes: 2
+monitor: auc
+
+model:
+  name: efficientnet_b0
+  pretrained: true
+
+data:
+  train_csv: data/processed/glaucoma/catalogs/harvard_combined_train.csv
+  test_csv: data/processed/glaucoma/catalogs/harvard_combined_test.csv
+  class_weights: data/processed/glaucoma/stats/harvard_combined_class_weights.json
+  image_size: 224
+
+batch_size: 32
+epochs: 50
+patience: 12
+lr: 0.0001
+weight_decay: 0.01
+amp: true
+num_workers: 4
+seed: 42
+balance_classes: true

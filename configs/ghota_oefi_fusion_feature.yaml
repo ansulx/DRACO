@@ -1,0 +1,19 @@
+# Train learnable fusion on OEFI same-eye pairs (specialists frozen).
+run_name: ghota_oefi_fusion_feature
+fusion_type: feature   # late_learnable | feature | cross_attn
+seed: 42
+epochs: 40
+patience: 12
+batch_size: 4
+num_workers: 2
+lr: 1.0e-3
+weight_decay: 0.01
+amp: true
+image_size: 224
+# Patient-level holdout
+test_size: 0.25
+target: dr   # dr (3-class) | dme (binary via 2-logit head on same fusion)
+
+oct_checkpoint: checkpoints/ghota_oct_dme_retfound_sota/best.pt
+fundus_checkpoint: checkpoints/ghota_fundus_dr_retfound_sota/best.pt
+pairs_csv: data/processed/ghota/catalogs/ghota_oefi_paired.csv

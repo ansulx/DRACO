@@ -1,0 +1,188 @@
+{
+  "fusion": {
+    "paired_data_on_disk": false,
+    "module": "ghota.models.fusion.LateFusion / CrossAttentionFusion",
+    "smoke_test_probs_shape": [
+      2,
+      3
+    ],
+    "status_md": "**No eye-paired DR fundus+OCT catalog on disk**, so we do **not** report a fused Acc number (that would require fabricated pairs).\n\n- Specialists are production-ready independently (route by modality).\n- `LateFusion` and `CrossAttentionFusion` are implemented and smoke-tested.\n- When a paired CSV arrives (`path_oct`, `path_fundus`, `label`), plug into late fusion and report Acc/F1 honestly.",
+    "one_liner": "Today: dual specialists by modality. Tomorrow: late/cross-attn fusion on real pairs."
+  },
+  "oct": {
+    "checkpoint": "C:\\Users\\HP\\OneDrive\\Desktop\\OCT\\checkpoints\\ghota_oct_dme_retfound_sota\\best.pt",
+    "holdout": {
+      "accuracy": 0.9008,
+      "macro_f1": 0.8312038825335512,
+      "macro_precision": 0.8490643146440249,
+      "macro_recall": 0.8174108458591217,
+      "per_class_f1": {
+        "0": 0.937007874015748,
+        "1": 0.6415094339622641,
+        "2": 0.9150943396226415
+      },
+      "per_class_metrics": {
+        "0": {
+          "precision": 0.9407114624505929,
+          "recall": 0.9333333333333333,
+          "f1": 0.9370078740157479,
+          "support": 255
+        },
+        "1": {
+          "precision": 0.7083333333333334,
+          "recall": 0.5862068965517241,
+          "f1": 0.6415094339622641,
+          "support": 58
+        },
+        "2": {
+          "precision": 0.8981481481481481,
+          "recall": 0.9326923076923077,
+          "f1": 0.9150943396226415,
+          "support": 312
+        }
+      },
+      "confusion_matrix": [
+        [
+          238,
+          3,
+          14
+        ],
+        [
+          5,
+          34,
+          19
+        ],
+        [
+          10,
+          11,
+          291
+        ]
+      ],
+      "n": 625,
+      "binary_collapse": {
+        "accuracy": 0.9472,
+        "f1": 0.955585464333782,
+        "precision": 0.9517426273458445,
+        "recall": 0.9594594594594594,
+        "sensitivity": 0.9594594594594594,
+        "specificity": 0.9294117647058824,
+        "confusion_matrix": [
+          [
+            237,
+            18
+          ],
+          [
+            15,
+            355
+          ]
+        ],
+        "n": 625,
+        "positives": 370,
+        "negatives": 255,
+        "threshold": 0.5,
+        "auc": 0.9888394276629571,
+        "sensitivity_at_95_spec": 0.9459459459459459
+      }
+    },
+    "oefi": {
+      "accuracy": 0.9667565139263252,
+      "f1": 0.895774647887324,
+      "precision": 0.8457446808510638,
+      "recall": 0.9520958083832335,
+      "sensitivity": 0.9520958083832335,
+      "specificity": 0.9693446088794926,
+      "confusion_matrix": [
+        [
+          917,
+          29
+        ],
+        [
+          8,
+          159
+        ]
+      ],
+      "n": 1113,
+      "positives": 167,
+      "negatives": 946,
+      "threshold": 0.5,
+      "auc": 0.9938030914914358,
+      "sensitivity_at_95_spec": 0.9760479041916168
+    }
+  },
+  "fundus": {
+    "checkpoint": "C:\\Users\\HP\\OneDrive\\Desktop\\OCT\\checkpoints\\ghota_fundus_dr_retfound_sota\\best.pt",
+    "holdout": {
+      "accuracy": 0.922237380627558,
+      "macro_f1": 0.8582681988023717,
+      "macro_precision": 0.8749639299209893,
+      "macro_recall": 0.8451412994385282,
+      "per_class_f1": {
+        "0": 0.9664804469273743,
+        "1": 0.9110764430577223,
+        "2": 0.6972477064220184
+      },
+      "per_class_metrics": {
+        "0": {
+          "precision": 0.9746478873239437,
+          "recall": 0.9584487534626038,
+          "f1": 0.9664804469273742,
+          "support": 361
+        },
+        "1": {
+          "precision": 0.8902439024390244,
+          "recall": 0.9329073482428115,
+          "f1": 0.9110764430577224,
+          "support": 313
+        },
+        "2": {
+          "precision": 0.76,
+          "recall": 0.6440677966101694,
+          "f1": 0.6972477064220184,
+          "support": 59
+        }
+      },
+      "confusion_matrix": [
+        [
+          346,
+          15,
+          0
+        ],
+        [
+          9,
+          292,
+          12
+        ],
+        [
+          0,
+          21,
+          38
+        ]
+      ],
+      "n": 733,
+      "binary_collapse": {
+        "accuracy": 0.9686221009549796,
+        "f1": 0.9693741677762983,
+        "precision": 0.9604221635883905,
+        "recall": 0.978494623655914,
+        "sensitivity": 0.978494623655914,
+        "specificity": 0.9584487534626038,
+        "confusion_matrix": [
+          [
+            346,
+            15
+          ],
+          [
+            8,
+            364
+          ]
+        ],
+        "n": 733,
+        "positives": 372,
+        "negatives": 361,
+        "threshold": 0.5,
+        "auc": 0.9934173294016025,
+        "sensitivity_at_95_spec": 0.9865591397849462
+      }
+    }
+  }
+}

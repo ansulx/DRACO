@@ -1,0 +1,36 @@
+# GLAUCO — Cross-attention fusion on GAMMA paired fundus + OCT
+run_name: glauco_fusion_gamma_crossattn
+binary: false
+num_classes: 3
+monitor: macro_f1
+
+fusion:
+  enabled: true
+  type: cross_attention
+  oct_model: retfound
+  fundus_model: retfound_cfp
+  oct_checkpoint: checkpoints/weights/RETFound_oct.pth
+  fundus_checkpoint: checkpoints/weights/RETFound_cfp.pth
+  fusion_dim: 512
+  num_heads: 8
+  freeze_backbones: true
+  backbone_lr_scale: 0.1
+
+data:
+  train_csv: data/processed/glaucoma/catalogs/gamma_paired_train.csv
+  test_csv: data/processed/glaucoma/catalogs/gamma_paired_test.csv
+  image_size: 224
+
+batch_size: 4
+epochs: 50
+patience: 15
+blr: 0.005
+head_warmup_epochs: 3
+warmup_epochs: 5
+cosine: true
+min_lr: 1.0e-6
+weight_decay: 0.05
+backbone_lr_scale: 0.1
+amp: true
+num_workers: 2
+seed: 42

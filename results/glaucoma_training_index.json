@@ -1,0 +1,118 @@
+[
+  {
+    "run_name": "glauco_efficientnet_harvard_gd_smoke",
+    "track": "oct_rnflt",
+    "model": "efficientnet_b0",
+    "dataset": "harvard_gd",
+    "best_epoch": 14,
+    "metrics": {
+      "accuracy": 0.78,
+      "macro_f1": 0.7778,
+      "auc": 0.9008,
+      "sensitivity_at_95_spec": 0.3725
+    },
+    "benchmark_target_auc": 0.9,
+    "benchmark_met": true
+  },
+  {
+    "run_name": "glauco_efficientnet_harvard_gd_full",
+    "track": "oct_rnflt",
+    "model": "efficientnet_b0",
+    "dataset": "harvard_gd",
+    "best_epoch": 26,
+    "metrics": {
+      "accuracy": 0.83,
+      "macro_f1": 0.8296,
+      "auc": 0.913,
+      "sensitivity_at_95_spec": 0.4314
+    },
+    "benchmark_target_auc": 0.9,
+    "benchmark_met": true,
+    "notes": "Exceeds Harvard-GDP EfficientNet benchmark (AUC 0.90)"
+  },
+  {
+    "run_name": "glauco_retfound_rnflt_harvard_gd",
+    "track": "oct_rnflt",
+    "model": "retfound_oct",
+    "dataset": "harvard_gd",
+    "best_epoch": 19,
+    "metrics": {
+      "accuracy": 0.83,
+      "macro_f1": 0.8271,
+      "auc": 0.8832,
+      "sensitivity_at_95_spec": 0.3725
+    },
+    "benchmark_target_auc": 0.9,
+    "benchmark_met": false,
+    "notes": "Architecture debate validated: CNN beats ViT on RNFLT maps"
+  },
+  {
+    "run_name": "glauco_efficientnet_harvard_gdp_full",
+    "track": "oct_rnflt",
+    "model": "efficientnet_b0",
+    "dataset": "harvard_gdp",
+    "best_epoch": 7,
+    "metrics": {
+      "accuracy": 0.795,
+      "macro_f1": 0.7922525398393758,
+      "auc": 0.8548436076525965,
+      "sensitivity_at_95_spec": 0.5168539325842697
+    },
+    "autopilot_run": "20260831_174904",
+    "notes": "Domain shift vs GD — use for GDP-only inference or after GF scale-up"
+  },
+  {
+    "run_name": "glauco_efficientnet_harvard_combined_full",
+    "track": "oct_rnflt",
+    "model": "efficientnet_b0",
+    "dataset": "harvard_combined",
+    "best_epoch": 10,
+    "metrics": {
+      "accuracy": 0.57,
+      "macro_f1": 0.562608076492727,
+      "auc": 0.6065178571428571,
+      "sensitivity_at_95_spec": 0.05714285714285714
+    },
+    "autopilot_run": "20260831_174904",
+    "notes": "Poor AUC — GD/GDP domain mismatch when merged; do not use for production"
+  },
+  {
+    "run_name": "glauco_efficientnet_harvard_gf_full",
+    "track": "oct_rnflt",
+    "model": "efficientnet_b0",
+    "dataset": "harvard_gf",
+    "best_epoch": 25,
+    "metrics": {
+      "val_auc": 0.8378,
+      "official_test_auc": 0.8377,
+      "accuracy": 0.777,
+      "macro_f1": 0.7715,
+      "sensitivity_at_95_spec": 0.5685
+    },
+    "train_n": 2100,
+    "val_n": 300,
+    "test_n": 900,
+    "benchmark_target_auc": 0.90,
+    "benchmark_met": false,
+    "notes": "Official 900-patient holdout; below GD smoke (0.913) — harder benchmark, race-balanced cohort"
+  },
+  {
+    "run_name": "glauco_retfound_cfp_airogs_light",
+    "track": "fundus",
+    "model": "retfound_cfp",
+    "dataset": "airogs_light",
+    "best_epoch": 30,
+    "metrics": {
+      "val_auc": 0.9830,
+      "holdout_test_auc": 0.9687,
+      "accuracy": 0.9195,
+      "macro_f1": 0.9364,
+      "sensitivity_at_95_spec": 0.8286
+    },
+    "train_n": 8000,
+    "val_n": 770,
+    "holdout_n": 770,
+    "benchmark_target_auc": 0.92,
+    "benchmark_met": true
+  }
+]

@@ -1,0 +1,32 @@
+# GLAUCO — RETFound-CFP fundus on AIROGS-light-v2
+run_name: glauco_retfound_cfp_airogs_light
+modality: fundus
+binary: true
+num_classes: 2
+monitor: auc
+
+model:
+  name: retfound_cfp
+  pretrained: false
+  checkpoint: checkpoints/weights/RETFound_cfp.pth
+
+data:
+  train_csv: data/processed/glaucoma/catalogs/airogs_light_train.csv
+  test_csv: data/processed/glaucoma/catalogs/airogs_light_test.csv
+  class_weights: data/processed/glaucoma/stats/airogs_light_class_weights.json
+  image_size: 224
+
+batch_size: 16
+epochs: 40
+patience: 12
+blr: 0.005
+layer_decay: 0.65
+head_warmup_epochs: 5
+warmup_epochs: 10
+cosine: true
+min_lr: 1.0e-6
+weight_decay: 0.05
+amp: true
+num_workers: 4
+seed: 42
+balance_classes: true

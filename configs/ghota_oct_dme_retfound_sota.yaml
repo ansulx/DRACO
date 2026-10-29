@@ -1,0 +1,45 @@
+# GHOTA SOTA — all OCT DR data (MMRDR + OCTID) + RETFound fine-tune recipe
+# Focal + layer-decay + cosine + head warmup; warm-start from retfound_mmrdr_v2.
+run_name: ghota_oct_dme_retfound_sota
+modality: oct
+num_classes: 3
+diseases: [oct_dme]
+monitor: macro_f1
+seed: 42
+
+batch_size: 8
+num_workers: 2
+epochs: 50
+patience: 15
+blr: 5.0e-3
+lr: null
+layer_decay: 0.65
+warmup_epochs: 10
+min_lr: 1.0e-6
+cosine: true
+head_warmup_epochs: 5
+weight_decay: 0.05
+amp: true
+balance_classes: true
+
+# Infuse prior SOTA MMRDR backbone (Acc~0.89) into GHOTA task-conditioned head
+init_from: checkpoints/retfound_mmrdr_v2/best.pt
+
+loss:
+  name: focal
+  gamma: 2.0
+  label_smoothing: 0.05
+
+model:
+  name: retfound
+  pretrained: false
+  checkpoint: checkpoints/weights/RETFound_oct.pth
+  disease_dim: 64
+  dropout: 0.1
+
+data:
+  train_csv: data/processed/ghota/catalogs/ghota_oct_all_train.csv
+  test_csv: data/processed/ghota/catalogs/ghota_oct_all_test.csv
+  class_weights: data/processed/stats/class_weights.json
+  image_size: 224
+  remap: true

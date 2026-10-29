@@ -21,9 +21,20 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUT = ROOT / "checkpoints" / "weights" / "RETFound_oct.pth"
-REPO_ID = "monish563/RETFOUND"
-FILENAME = "RETFound_oct_weights.pth"
+WEIGHTS = {
+    "oct": {
+        "repo": "monish563/RETFOUND",
+        "out": ROOT / "checkpoints" / "weights" / "RETFound_oct.pth",
+        "filename": "RETFound_oct_weights.pth",
+        "accept_url": "https://huggingface.co/monish563/RETFOUND",
+    },
+    "cfp": {
+        "repo": "YukunZhou/RETFound_mae_natureCFP",
+        "out": ROOT / "checkpoints" / "weights" / "RETFound_cfp.pth",
+        "filename": "RETFound_mae_natureCFP.pth",
+        "accept_url": "https://huggingface.co/YukunZhou/RETFound_mae_natureCFP",
+    },
+}
 
 
 def main() -> int:
@@ -34,17 +45,25 @@ def main() -> int:
         help="HF read token (or set HF_TOKEN env var)",
     )
     parser.add_argument(
+        "--modality",
+        choices=["oct", "cfp", "both"],
+        default="oct",
+        help="Which RETFound weights to download (cfp = colour fundus)",
+    )
+    parser.add_argument(
         "--out",
         type=Path,
-        default=DEFAULT_OUT,
-        help=f"Output path (default: {DEFAULT_OUT})",
+        default=None,
+        help="Output path (overrides --modality default)",
     )
     args = parser.parse_args()
 
     if not args.token:
         print(
             "No HF token found.\n\n"
-            "1. Accept access: https://huggingface.co/monish563/RETFOUND\n"
+            "1. Accept access on the HuggingFace model page for each weight\n"
+            "   OCT: https://huggingface.co/monish563/RETFOUND\n"
+            "   CFP: https://huggingface.co/YukunZhou/RETFound_mae_natureCFP\n"
             "2. Create a read token: https://huggingface.co/settings/tokens\n"
             "3. Run:\n"
             "     set HF_TOKEN=hf_...\n"
@@ -61,24 +80,28 @@ def main() -> int:
 
     login(token=args.token, add_to_git_credential=False)
 
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    print(f"Downloading {REPO_ID}/{FILENAME} ...")
-    path = hf_hub_download(
-        repo_id=REPO_ID,
-        filename=FILENAME,
-        local_dir=str(args.out.parent),
-        token=args.token,
-    )
-    downloaded = Path(path)
-    if downloaded.resolve() != args.out.resolve() and downloaded.exists():
-        downloaded.replace(args.out)
+    modalities = ["oct", "cfp"] if args.modality == "both" else [args.modality]
+    for mod in modalities:
+        spec = WEIGHTS[mod]
+        out = args.out if args.out and len(modalities) == 1 else spec["out"]
+        filename = spec["filename"]
+        repo_id = spec["repo"]
+        out.parent.mkdir(parents=True, exist_ok=True)
+        print(f"Downloading {repo_id}/{filename} -> {out}")
+        path = hf_hub_download(
+            repo_id=repo_id,
+            filename=filename,
+            local_dir=str(out.parent),
+            token=args.token,
+        )
+        downloaded = Path(path)
+        if downloaded.resolve() != out.resolve() and downloaded.exists():
+            downloaded.replace(out)
+        print(f"Saved: {out}")
 
-    print(f"Saved: {args.out}")
     print(
-        "\nNext: set checkpoint in configs/retfound_mmrdr.yaml:\n"
-        "  checkpoint: checkpoints/weights/RETFound_oct.pth\n"
-        "Then train:\n"
-        "  python draco/train.py --config configs/retfound_mmrdr.yaml"
+        "\nOCT train:  python draco/train.py --config configs/retfound_mmrdr_v2.yaml\n"
+        "Fundus train: python glauco/train.py --config configs/glaucoma_retfound_cfp_airogs_light.yaml"
     )
     return 0
 

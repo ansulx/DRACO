@@ -1,0 +1,187 @@
+# GLAUCO dataset registry — glaucoma detection (OCT + fundus)
+# Catalog CSVs are the single interface to training (same pattern as DRACO).
+
+project: glauco
+task: glaucoma_detection
+modalities: [oct_bscan, rnflt, fundus, fusion]
+
+# ---------------------------------------------------------------------------
+# Primary training datasets (download via scripts/download_glaucoma_datasets.py)
+# ---------------------------------------------------------------------------
+
+datasets:
+  harvard_gd:
+    description: Harvard EyeLearn — 500 RNFLT maps, smoke-test size
+    modality: rnflt
+    labels: {0: normal, 1: glaucoma}
+    num_classes: 2
+    license: CC BY-NC-ND 4.0
+    source: https://github.com/Harvard-Ophthalmology-AI-Lab/EyeLearn
+    hf_repo: harvardairobotics/Harvard-GD
+    raw_dir: data/raw/glaucoma/harvard_gd
+    size_mb: 182
+
+  harvard_gf:
+    description: Harvard-GF — 3,300 patients, RNFLT + 3D B-scans, official 2100/300/900 split
+    modality: [rnflt, oct_bscan]
+    labels: {0: normal, 1: glaucoma}
+    num_classes: 2
+    license: CC BY-NC-ND 4.0
+    source: https://github.com/Harvard-Ophthalmology-AI-Lab/Harvard-GF
+    zenodo: https://zenodo.org/records/13178701
+    raw_dir: data/raw/glaucoma/harvard_gf
+    size_gb: 20.4
+    splits: {train: 2100, val: 300, test: 900}
+    benchmark_auc: 0.90  # EfficientNet on RNFLT (Harvard-GDP paper)
+
+  harvard_gdp:
+    description: Harvard-GDP — 1,000 patients, progression labels on 500
+    modality: [rnflt, oct_bscan]
+    labels: {0: normal, 1: glaucoma}
+    num_classes: 2
+    license: CC BY-NC-ND 4.0
+    hf_repo: harvardairobotics/Harvard-GDP
+    raw_dir: data/raw/glaucoma/harvard_gdp
+    benchmark_auc: 0.90
+
+  airogs_light:
+    description: AIROGS-light-v2 — balanced 4k/class fundus, ML-ready
+    modality: fundus
+    labels: {0: no_referable_glaucoma, 1: referable_glaucoma}
+    num_classes: 2
+    license: CC BY-NC-ND 4.0
+    kaggle: deathtrooper/glaucoma-dataset-eyepacs-airogs-light-v2
+    raw_dir: data/raw/glaucoma/airogs_light
+    benchmark_auc: 0.92
+
+  airogs_full:
+    description: Full AIROGS / Rotterdam EyePACS — 113,893 images
+    modality: fundus
+    num_classes: 2
+    license: CC BY-NC-ND 4.0
+    zenodo: https://zenodo.org/records/5793241
+    raw_dir: data/raw/glaucoma/airogs_full
+    size_gb: 54.9
+    note: Manual approval required on Zenodo
+
+  gamma:
+    description: GAMMA challenge — 300 paired fundus + macular OCT, 3-class grading
+    modality: fusion
+    labels: {0: normal, 1: early_glaucoma, 2: advanced_glaucoma}
+    num_classes: 3
+    license: CC BY-NC-ND 4.0
+    source: https://gamma.grand-challenge.org/
+    raw_dir: data/raw/glaucoma/gamma
+    benchmark_kappa: 0.85  # SmartDSP winner
+
+  gleam:
+    description: GLEAM 2026 — 1,200 tri-modal (fundus + cpOCT + VF), 4-stage
+    modality: fusion
+    labels: {0: normal, 1: early, 2: intermediate, 3: advanced}
+    num_classes: 4
+    license: research use
+    kaggle: zhangyiyinge/gleam-dataset
+    github: https://github.com/microewing/HAMM
+    raw_dir: data/raw/glaucoma/gleam
+    paper: arXiv:2603.12800
+
+# ---------------------------------------------------------------------------
+# External validation (fundus) — never train on these
+# ---------------------------------------------------------------------------
+
+external_validation:
+  refuge:
+    modality: fundus
+    source: https://ieee-dataport.org/documents/refuge-retinal-fundus-glaucoma-challenge
+    n: 1200
+  papila:
+    modality: fundus
+    n: 488
+  chaksu:
+    modality: fundus
+    n: 1345
+  rim_one_dl:
+    modality: fundus
+    n: 485
+    raw_dir: data/raw/glaucoma/rim_one
+    note: Use by-hospital split for domain shift
+    status: on_disk
+  acrima:
+    modality: fundus
+    n: 705
+    raw_dir: data/raw/glaucoma/acrima
+    kaggle: orvile/acrima-glaucoma-assessment-using-fundus-images
+    note: OD-cropped; label from _g_ in filename
+    status: on_disk
+  beh:
+    modality: fundus
+    n: 634
+    raw_dir: data/raw/glaucoma/beh
+    source: https://github.com/openmedlab/Awesome-Medical-Dataset/blob/main/resources/BEH.md
+    note: Bangladesh Eye Hospital glaucoma vs normal
+    status: on_disk
+  biomisa_od:
+    modality: fundus
+    raw_dir: data/raw/glaucoma/biomisa
+    mendeley: https://data.mendeley.com/datasets/trghs22fpg/4
+    note: OD Color fundus only for GLAUCO; Macula branch is multi-disease OCT+fundus
+    status: on_disk
+  drishti_gs:
+    modality: fundus
+    n: 101
+    raw_dir: data/raw/glaucoma/drishti
+    source: https://cvit.iiit.ac.in/projects/mip/drishti-gs/mip-dataset2/Dataset_description.php
+    kaggle: lokeshsaipureddi/drishtigs-retina-dataset-for-onh-segmentation
+    note: Folder-labeled GLAUCOMA/NORMAL; also ONH seg GT
+    status: on_disk
+
+# ---------------------------------------------------------------------------
+# Processed catalog paths (built by scripts/build_glaucoma_catalogs.py)
+# ---------------------------------------------------------------------------
+
+catalogs:
+  harvard_gd_train: data/processed/glaucoma/catalogs/harvard_gd_train.csv
+  harvard_gd_test: data/processed/glaucoma/catalogs/harvard_gd_test.csv
+  harvard_gf_rnflt_train: data/processed/glaucoma/catalogs/harvard_gf_rnflt_train.csv
+  harvard_gf_rnflt_test: data/processed/glaucoma/catalogs/harvard_gf_rnflt_test.csv
+  airogs_light_train: data/processed/glaucoma/catalogs/airogs_light_train.csv
+  airogs_light_test: data/processed/glaucoma/catalogs/airogs_light_test.csv
+  gamma_paired_train: data/processed/glaucoma/catalogs/gamma_paired_train.csv
+  gamma_paired_test: data/processed/glaucoma/catalogs/gamma_paired_test.csv
+  # Parth fundus external (GLAUCO only)
+  acrima_train: data/processed/glaucoma/catalogs/acrima_train.csv
+  acrima_test: data/processed/glaucoma/catalogs/acrima_test.csv
+  beh_train: data/processed/glaucoma/catalogs/beh_train.csv
+  beh_test: data/processed/glaucoma/catalogs/beh_test.csv
+  rim_one_train: data/processed/glaucoma/catalogs/rim_one_train.csv
+  rim_one_test: data/processed/glaucoma/catalogs/rim_one_test.csv
+  biomisa_od_train: data/processed/glaucoma/catalogs/biomisa_od_train.csv
+  biomisa_od_test: data/processed/glaucoma/catalogs/biomisa_od_test.csv
+  drishti_train: data/processed/glaucoma/catalogs/drishti_train.csv
+  drishti_test: data/processed/glaucoma/catalogs/drishti_test.csv
+
+# ---------------------------------------------------------------------------
+# Model targets (from 2025–2026 literature)
+# ---------------------------------------------------------------------------
+
+benchmarks:
+  oct_rnflt:
+    model: efficientnet_b0
+    metric: auc
+    target: 0.90
+    source: Harvard-GDP official benchmark
+  oct_bscan:
+    model: retfound_oct
+    metric: auc
+    target: 0.85
+    source: Harvard-GF ablation
+  fundus:
+    model: retfound_cfp
+    metric: auc_external
+    target: 0.92
+    source: RETFound vs VGG-19 external validation
+  fusion_gamma:
+    model: cross_attention_fusion
+    metric: quadratic_kappa
+    target: 0.85
+    source: GAMMA SmartDSP / M2F3

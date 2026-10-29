@@ -1,0 +1,44 @@
+# Tri-modal binary (any glaucoma vs normal) — screening-style fusion metric
+run_name: glauco_fusion_gleam_trimodal_binary
+binary: true
+num_classes: 2
+monitor: auc
+
+fusion:
+  enabled: true
+  trimodal: true
+  type: cross_attention
+  keep_frozen: true
+  embed_dim: 512
+  num_heads: 8
+  dropout: 0.1
+  oct:
+    name: efficientnet_b0
+    pretrained: true
+    freeze: true
+  fundus:
+    name: efficientnet_b0
+    pretrained: true
+    freeze: true
+  vf:
+    name: efficientnet_b0
+    pretrained: true
+    freeze: true
+
+data:
+  train_csv: data/processed/glaucoma/catalogs/gleam_paired_train.csv
+  test_csv: data/processed/glaucoma/catalogs/gleam_paired_val.csv
+  image_size: 224
+
+batch_size: 16
+epochs: 50
+patience: 15
+blr: 0.01
+warmup_epochs: 5
+cosine: true
+min_lr: 1.0e-6
+weight_decay: 0.05
+amp: true
+num_workers: 2
+seed: 42
+balance_classes: true

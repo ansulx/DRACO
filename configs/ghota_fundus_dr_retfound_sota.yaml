@@ -1,0 +1,41 @@
+# GHOTA SOTA — fundus DR (APTOS) 3-class with RETFound-CFP
+# Same recipe as OCT: Focal + layer-decay + cosine + head warmup
+run_name: ghota_fundus_dr_retfound_sota
+modality: fundus
+num_classes: 3
+diseases: [fundus_dr]
+monitor: macro_f1
+seed: 42
+
+batch_size: 8
+num_workers: 2
+epochs: 50
+patience: 15
+blr: 5.0e-3
+lr: null
+layer_decay: 0.65
+warmup_epochs: 10
+min_lr: 1.0e-6
+cosine: true
+head_warmup_epochs: 5
+weight_decay: 0.05
+amp: true
+balance_classes: true
+
+loss:
+  name: focal
+  gamma: 2.0
+  label_smoothing: 0.05
+
+model:
+  name: retfound
+  pretrained: false
+  checkpoint: checkpoints/weights/RETFound_cfp.pth
+  disease_dim: 64
+  dropout: 0.1
+
+data:
+  train_csv: data/processed/ghota/catalogs/ghota_fundus_dr_train.csv
+  test_csv: data/processed/ghota/catalogs/ghota_fundus_dr_test.csv
+  image_size: 224
+  remap: true

@@ -1,0 +1,17 @@
+# Cross-attention fusion on OEFI pairs (CLS/tokens from frozen specialists)
+run_name: ghota_oefi_fusion_xattn
+fusion_type: cross_attn
+seed: 42
+epochs: 40
+patience: 12
+batch_size: 2
+num_workers: 2
+lr: 5.0e-4
+weight_decay: 0.01
+amp: true
+image_size: 224
+test_size: 0.25
+target: dr
+oct_checkpoint: checkpoints/ghota_oct_dme_retfound_sota/best.pt
+fundus_checkpoint: checkpoints/ghota_fundus_dr_retfound_sota/best.pt
+pairs_csv: data/processed/ghota/catalogs/ghota_oefi_paired.csv

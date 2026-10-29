@@ -1,0 +1,26 @@
+# GLEAM VF-only EfficientNet (4-class ablation) — often strongest single modality
+run_name: glauco_gleam_vf_eff
+modality: vf
+binary: false
+num_classes: 4
+monitor: macro_f1
+
+model:
+  name: efficientnet_b0
+  pretrained: true
+
+data:
+  train_csv: data/processed/glaucoma/catalogs/gleam_vf_train.csv
+  test_csv: data/processed/glaucoma/catalogs/gleam_vf_val.csv
+  class_weights: data/processed/glaucoma/stats/gleam_paired_class_weights.json
+  image_size: 224
+
+batch_size: 32
+epochs: 50
+patience: 15
+lr: 0.0003
+weight_decay: 0.01
+amp: true
+num_workers: 2
+seed: 42
+balance_classes: true

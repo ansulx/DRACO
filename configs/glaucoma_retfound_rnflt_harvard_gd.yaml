@@ -1,0 +1,31 @@
+# GLAUCO — RETFound OCT on Harvard-GD RNFLT (uses OCT-pretrained encoder)
+run_name: glauco_retfound_rnflt_harvard_gd
+modality: rnflt
+binary: true
+num_classes: 2
+monitor: auc
+
+model:
+  name: retfound
+  pretrained: false
+  checkpoint: checkpoints/weights/RETFound_oct.pth
+
+data:
+  train_csv: data/processed/glaucoma/catalogs/harvard_gd_train.csv
+  test_csv: data/processed/glaucoma/catalogs/harvard_gd_test.csv
+  class_weights: data/processed/glaucoma/stats/harvard_gd_class_weights.json
+  image_size: 224
+
+batch_size: 8
+epochs: 30
+patience: 10
+blr: 0.005
+layer_decay: 0.65
+head_warmup_epochs: 3
+warmup_epochs: 5
+cosine: true
+min_lr: 1.0e-6
+weight_decay: 0.05
+amp: true
+num_workers: 2
+seed: 42

@@ -1,0 +1,1295 @@
+{
+  "literature": {
+    "HAMM tri-modal (GLEAM, 2026)": {
+      "accuracy": 0.8108,
+      "macro_f1": 0.759,
+      "auroc": 0.9303,
+      "kappa": 0.9007,
+      "source": "arXiv:2603.12800 / IEEE TMI 2026",
+      "link": "https://arxiv.org/abs/2603.12800"
+    },
+    "M2F3 fused (GAMMA)": {
+      "kappa": 0.9015,
+      "note": "dual fundus+OCT on GAMMA (not GLEAM)",
+      "source": "TVST 2025",
+      "link": "https://doi.org/10.1167/tvst.14.11.8"
+    },
+    "Harvard-GDP EfficientNet RNFLT": {
+      "auc": 0.9,
+      "source": "Harvard-GDP paper benchmark",
+      "link": "https://github.com/Harvard-Ophthalmology-AI-Lab/Harvard-GF"
+    }
+  },
+  "our_runs": {
+    "glauco_fusion_gleam_trimodal_xattn": {
+      "config": "configs/glaucoma_fusion_gleam_trimodal_xattn.yaml",
+      "val": {
+        "accuracy": 0.7541666666666667,
+        "macro_f1": 0.7401513399996147,
+        "macro_precision": 0.732503885003885,
+        "macro_recall": 0.7604166666666667,
+        "per_class_f1": {
+          "0": 0.8127853881278538,
+          "1": 0.5,
+          "2": 0.7111111111111111,
+          "3": 0.9367088607594937
+        },
+        "per_class_metrics": {
+          "0": {
+            "precision": 0.898989898989899,
+            "recall": 0.7416666666666667,
+            "f1": 0.8127853881278538,
+            "support": 120
+          },
+          "1": {
+            "precision": 0.4423076923076923,
+            "recall": 0.575,
+            "f1": 0.5,
+            "support": 40
+          },
+          "2": {
+            "precision": 0.64,
+            "recall": 0.8,
+            "f1": 0.7111111111111111,
+            "support": 40
+          },
+          "3": {
+            "precision": 0.9487179487179487,
+            "recall": 0.925,
+            "f1": 0.9367088607594937,
+            "support": 40
+          }
+        },
+        "confusion_matrix": [
+          [
+            89,
+            25,
+            6,
+            0
+          ],
+          [
+            8,
+            23,
+            9,
+            0
+          ],
+          [
+            2,
+            4,
+            32,
+            2
+          ],
+          [
+            0,
+            0,
+            3,
+            37
+          ]
+        ],
+        "n": 240,
+        "epoch": 17,
+        "train_loss": 0.2157252644085222,
+        "lr": 0.00048487985821305603
+      },
+      "test": {
+        "accuracy": 0.7416666666666667,
+        "macro_f1": 0.6892294118838584,
+        "macro_precision": 0.6857660486787844,
+        "macro_recall": 0.7,
+        "per_class_f1": {
+          "0": 0.853448275862069,
+          "1": 0.3684210526315789,
+          "2": 0.6236559139784946,
+          "3": 0.9113924050632911
+        },
+        "per_class_metrics": {
+          "0": {
+            "precision": 0.8839285714285714,
+            "recall": 0.825,
+            "f1": 0.8534482758620688,
+            "support": 120
+          },
+          "1": {
+            "precision": 0.3888888888888889,
+            "recall": 0.35,
+            "f1": 0.36842105263157887,
+            "support": 40
+          },
+          "2": {
+            "precision": 0.5471698113207547,
+            "recall": 0.725,
+            "f1": 0.6236559139784946,
+            "support": 40
+          },
+          "3": {
+            "precision": 0.9230769230769231,
+            "recall": 0.9,
+            "f1": 0.9113924050632911,
+            "support": 40
+          }
+        },
+        "confusion_matrix": [
+          [
+            99,
+            17,
+            4,
+            0
+          ],
+          [
+            9,
+            14,
+            17,
+            0
+          ],
+          [
+            3,
+            5,
+            29,
+            3
+          ],
+          [
+            1,
+            0,
+            3,
+            36
+          ]
+        ],
+        "n": 240,
+        "binary_remapped": {
+          "accuracy": 0.8625,
+          "f1": 0.8674698795180723,
+          "precision": 0.8372093023255814,
+          "recall": 0.9,
+          "sensitivity": 0.9,
+          "specificity": 0.825,
+          "confusion_matrix": [
+            [
+              99,
+              21
+            ],
+            [
+              12,
+              108
+            ]
+          ],
+          "n": 240,
+          "positives": 120,
+          "negatives": 120,
+          "threshold": 0.5,
+          "auc": 0.9470833333333334,
+          "sensitivity_at_95_spec": 0.8083333333333333,
+          "ppv": 0.8372093023255814,
+          "npv": 0.8918918918918919,
+          "average_precision": 0.9551173688273632,
+          "brier": 0.10848780763080976,
+          "sensitivity_at_85_spec": 0.8833333333333333,
+          "threshold_at_85_spec": 0.6371492743492126,
+          "sensitivity_at_90_spec": 0.8166666666666667,
+          "threshold_at_90_spec": 0.8857149481773376,
+          "threshold_at_95_spec": 0.9145873785018921
+        }
+      }
+    },
+    "glauco_fusion_gleam_trimodal_late": {
+      "config": "configs/glaucoma_fusion_gleam_trimodal_late.yaml",
+      "val": {
+        "accuracy": 0.7666666666666667,
+        "macro_f1": 0.7290240613124626,
+        "macro_precision": 0.7387748753287644,
+        "macro_recall": 0.725,
+        "per_class_f1": {
+          "0": 0.8429752066115702,
+          "1": 0.44155844155844154,
+          "2": 0.7126436781609196,
+          "3": 0.918918918918919
+        },
+        "per_class_metrics": {
+          "0": {
+            "precision": 0.8360655737704918,
+            "recall": 0.85,
+            "f1": 0.8429752066115703,
+            "support": 120
+          },
+          "1": {
+            "precision": 0.4594594594594595,
+            "recall": 0.425,
+            "f1": 0.44155844155844154,
+            "support": 40
+          },
+          "2": {
+            "precision": 0.6595744680851063,
+            "recall": 0.775,
+            "f1": 0.7126436781609196,
+            "support": 40
+          },
+          "3": {
+            "precision": 1.0,
+            "recall": 0.85,
+            "f1": 0.9189189189189189,
+            "support": 40
+          }
+        },
+        "confusion_matrix": [
+          [
+            102,
+            15,
+            3,
+            0
+          ],
+          [
+            16,
+            17,
+            7,
+            0
+          ],
+          [
+            4,
+            5,
+            31,
+            0
+          ],
+          [
+            0,
+            0,
+            6,
+            34
+          ]
+        ],
+        "n": 240,
+        "epoch": 21,
+        "train_loss": 0.21332902999387848,
+        "lr": 0.0003824265313943701
+      },
+      "test": {
+        "accuracy": 0.7625,
+        "macro_f1": 0.7041043083900227,
+        "macro_precision": 0.7165238095238096,
+        "macro_recall": 0.7020833333333334,
+        "per_class_f1": {
+          "0": 0.8653061224489796,
+          "1": 0.4,
+          "2": 0.6444444444444445,
+          "3": 0.9066666666666666
+        },
+        "per_class_metrics": {
+          "0": {
+            "precision": 0.848,
+            "recall": 0.8833333333333333,
+            "f1": 0.8653061224489796,
+            "support": 120
+          },
+          "1": {
+            "precision": 0.4666666666666667,
+            "recall": 0.35,
+            "f1": 0.4,
+            "support": 40
+          },
+          "2": {
+            "precision": 0.58,
+            "recall": 0.725,
+            "f1": 0.6444444444444445,
+            "support": 40
+          },
+          "3": {
+            "precision": 0.9714285714285714,
+            "recall": 0.85,
+            "f1": 0.9066666666666667,
+            "support": 40
+          }
+        },
+        "confusion_matrix": [
+          [
+            106,
+            11,
+            3,
+            0
+          ],
+          [
+            13,
+            14,
+            13,
+            0
+          ],
+          [
+            5,
+            5,
+            29,
+            1
+          ],
+          [
+            1,
+            0,
+            5,
+            34
+          ]
+        ],
+        "n": 240,
+        "binary_remapped": {
+          "accuracy": 0.8541666666666666,
+          "f1": 0.8523206751054853,
+          "precision": 0.8632478632478633,
+          "recall": 0.8416666666666667,
+          "sensitivity": 0.8416666666666667,
+          "specificity": 0.8666666666666667,
+          "confusion_matrix": [
+            [
+              104,
+              16
+            ],
+            [
+              19,
+              101
+            ]
+          ],
+          "n": 240,
+          "positives": 120,
+          "negatives": 120,
+          "threshold": 0.5,
+          "auc": 0.9473611111111111,
+          "sensitivity_at_95_spec": 0.8,
+          "ppv": 0.8632478632478633,
+          "npv": 0.8455284552845529,
+          "average_precision": 0.9559383461841566,
+          "brier": 0.09401393814202046,
+          "sensitivity_at_85_spec": 0.875,
+          "threshold_at_85_spec": 0.44074752926826477,
+          "sensitivity_at_90_spec": 0.8416666666666667,
+          "threshold_at_90_spec": 0.5756569504737854,
+          "threshold_at_95_spec": 0.7296435236930847
+        }
+      }
+    },
+    "glauco_fusion_gleam_dual_xattn_eff": {
+      "config": "configs/glaucoma_fusion_gleam_dual_xattn_eff.yaml",
+      "val": {
+        "accuracy": 0.5291666666666667,
+        "macro_f1": 0.5074900415289432,
+        "macro_precision": 0.5414624438357617,
+        "macro_recall": 0.5020833333333333,
+        "per_class_f1": {
+          "0": 0.6481481481481481,
+          "1": 0.3157894736842105,
+          "2": 0.37037037037037035,
+          "3": 0.6956521739130435
+        },
+        "per_class_metrics": {
+          "0": {
+            "precision": 0.7291666666666666,
+            "recall": 0.5833333333333334,
+            "f1": 0.6481481481481481,
+            "support": 120
+          },
+          "1": {
+            "precision": 0.24324324324324326,
+            "recall": 0.45,
+            "f1": 0.3157894736842105,
+            "support": 40
+          },
+          "2": {
+            "precision": 0.36585365853658536,
+            "recall": 0.375,
+            "f1": 0.3703703703703704,
+            "support": 40
+          },
+          "3": {
+            "precision": 0.8275862068965517,
+            "recall": 0.6,
+            "f1": 0.6956521739130435,
+            "support": 40
+          }
+        },
+        "confusion_matrix": [
+          [
+            70,
+            32,
+            17,
+            1
+          ],
+          [
+            18,
+            18,
+            4,
+            0
+          ],
+          [
+            6,
+            15,
+            15,
+            4
+          ],
+          [
+            2,
+            9,
+            5,
+            24
+          ]
+        ],
+        "n": 240,
+        "epoch": 29,
+        "train_loss": 0.2260369016478459,
+        "lr": 0.0001651529773084244
+      },
+      "test": {
+        "accuracy": 0.525,
+        "macro_f1": 0.49175858707012043,
+        "macro_precision": 0.5108700406123087,
+        "macro_recall": 0.48749999999999993,
+        "per_class_f1": {
+          "0": 0.663594470046083,
+          "1": 0.28,
+          "2": 0.3111111111111111,
+          "3": 0.7123287671232876
+        },
+        "per_class_metrics": {
+          "0": {
+            "precision": 0.7422680412371134,
+            "recall": 0.6,
+            "f1": 0.663594470046083,
+            "support": 120
+          },
+          "1": {
+            "precision": 0.23333333333333334,
+            "recall": 0.35,
+            "f1": 0.28,
+            "support": 40
+          },
+          "2": {
+            "precision": 0.28,
+            "recall": 0.35,
+            "f1": 0.3111111111111111,
+            "support": 40
+          },
+          "3": {
+            "precision": 0.7878787878787878,
+            "recall": 0.65,
+            "f1": 0.7123287671232875,
+            "support": 40
+          }
+        },
+        "confusion_matrix": [
+          [
+            72,
+            31,
+            15,
+            2
+          ],
+          [
+            13,
+            14,
+            12,
+            1
+          ],
+          [
+            11,
+            11,
+            14,
+            4
+          ],
+          [
+            1,
+            4,
+            9,
+            26
+          ]
+        ],
+        "n": 240,
+        "binary_remapped": {
+          "accuracy": 0.7041666666666667,
+          "f1": 0.7320754716981132,
+          "precision": 0.6689655172413793,
+          "recall": 0.8083333333333333,
+          "sensitivity": 0.8083333333333333,
+          "specificity": 0.6,
+          "confusion_matrix": [
+            [
+              72,
+              48
+            ],
+            [
+              23,
+              97
+            ]
+          ],
+          "n": 240,
+          "positives": 120,
+          "negatives": 120,
+          "threshold": 0.5,
+          "auc": 0.8011805555555556,
+          "sensitivity_at_95_spec": 0.3333333333333333,
+          "ppv": 0.6689655172413793,
+          "npv": 0.7578947368421053,
+          "average_precision": 0.8111879400139962,
+          "brier": 0.21911014792094682,
+          "sensitivity_at_85_spec": 0.55,
+          "threshold_at_85_spec": 0.9292956590652466,
+          "sensitivity_at_90_spec": 0.4083333333333333,
+          "threshold_at_90_spec": 0.9713113903999329,
+          "threshold_at_95_spec": 0.9910852909088135
+        }
+      }
+    },
+    "glauco_fusion_gleam_late": {
+      "config": "configs/glaucoma_fusion_gleam_late.yaml",
+      "val": {
+        "accuracy": 0.5291666666666667,
+        "macro_f1": 0.49926231673349125,
+        "macro_precision": 0.5458649961946022,
+        "macro_recall": 0.4895833333333333,
+        "per_class_f1": {
+          "0": 0.6790697674418604,
+          "1": 0.29411764705882354,
+          "2": 0.3469387755102041,
+          "3": 0.676923076923077
+        },
+        "per_class_metrics": {
+          "0": {
+            "precision": 0.7684210526315789,
+            "recall": 0.6083333333333333,
+            "f1": 0.6790697674418604,
+            "support": 120
+          },
+          "1": {
+            "precision": 0.24193548387096775,
+            "recall": 0.375,
+            "f1": 0.29411764705882354,
+            "support": 40
+          },
+          "2": {
+            "precision": 0.29310344827586204,
+            "recall": 0.425,
+            "f1": 0.3469387755102041,
+            "support": 40
+          },
+          "3": {
+            "precision": 0.88,
+            "recall": 0.55,
+            "f1": 0.676923076923077,
+            "support": 40
+          }
+        },
+        "confusion_matrix": [
+          [
+            73,
+            29,
+            18,
+            0
+          ],
+          [
+            14,
+            15,
+            11,
+            0
+          ],
+          [
+            6,
+            14,
+            17,
+            3
+          ],
+          [
+            2,
+            4,
+            12,
+            22
+          ]
+        ],
+        "n": 240,
+        "epoch": 22,
+        "train_loss": 0.5622463193204668,
+        "lr": 0.00035488077893510854
+      },
+      "test": {
+        "accuracy": 0.5166666666666667,
+        "macro_f1": 0.47858705008680935,
+        "macro_precision": 0.515966107617051,
+        "macro_recall": 0.4666666666666667,
+        "per_class_f1": {
+          "0": 0.6727272727272727,
+          "1": 0.21505376344086022,
+          "2": 0.34,
+          "3": 0.6865671641791045
+        },
+        "per_class_metrics": {
+          "0": {
+            "precision": 0.74,
+            "recall": 0.6166666666666667,
+            "f1": 0.6727272727272727,
+            "support": 120
+          },
+          "1": {
+            "precision": 0.18867924528301888,
+            "recall": 0.25,
+            "f1": 0.21505376344086022,
+            "support": 40
+          },
+          "2": {
+            "precision": 0.2833333333333333,
+            "recall": 0.425,
+            "f1": 0.34,
+            "support": 40
+          },
+          "3": {
+            "precision": 0.8518518518518519,
+            "recall": 0.575,
+            "f1": 0.6865671641791045,
+            "support": 40
+          }
+        },
+        "confusion_matrix": [
+          [
+            74,
+            28,
+            18,
+            0
+          ],
+          [
+            15,
+            10,
+            14,
+            1
+          ],
+          [
+            10,
+            10,
+            17,
+            3
+          ],
+          [
+            1,
+            5,
+            11,
+            23
+          ]
+        ],
+        "n": 240,
+        "binary_remapped": {
+          "accuracy": 0.6875,
+          "f1": 0.7232472324723247,
+          "precision": 0.6490066225165563,
+          "recall": 0.8166666666666667,
+          "sensitivity": 0.8166666666666667,
+          "specificity": 0.5583333333333333,
+          "confusion_matrix": [
+            [
+              67,
+              53
+            ],
+            [
+              22,
+              98
+            ]
+          ],
+          "n": 240,
+          "positives": 120,
+          "negatives": 120,
+          "threshold": 0.5,
+          "auc": 0.8143055555555555,
+          "sensitivity_at_95_spec": 0.5,
+          "ppv": 0.6490066225165563,
+          "npv": 0.7528089887640449,
+          "average_precision": 0.8376598676040896,
+          "brier": 0.21219503340493445,
+          "sensitivity_at_85_spec": 0.6416666666666667,
+          "threshold_at_85_spec": 0.8798542022705078,
+          "sensitivity_at_90_spec": 0.5333333333333333,
+          "threshold_at_90_spec": 0.9348995685577393,
+          "threshold_at_95_spec": 0.9549686312675476
+        }
+      }
+    },
+    "glauco_fusion_gleam_binary_xattn": {
+      "config": "configs/glaucoma_fusion_gleam_binary_xattn.yaml",
+      "val": {
+        "accuracy": 0.725,
+        "macro_f1": 0.7154354699626329,
+        "macro_precision": 0.7599486521181001,
+        "macro_recall": 0.725,
+        "per_class_f1": {
+          "0": 0.7676056338028169,
+          "1": 0.6632653061224489
+        },
+        "per_class_metrics": {
+          "0": {
+            "precision": 0.6646341463414634,
+            "recall": 0.9083333333333333,
+            "f1": 0.767605633802817,
+            "support": 120
+          },
+          "1": {
+            "precision": 0.8552631578947368,
+            "recall": 0.5416666666666666,
+            "f1": 0.6632653061224489,
+            "support": 120
+          }
+        },
+        "confusion_matrix": [
+          [
+            109,
+            11
+          ],
+          [
+            55,
+            65
+          ]
+        ],
+        "n": 240,
+        "f1": 0.6632653061224489,
+        "precision": 0.8552631578947368,
+        "recall": 0.5416666666666666,
+        "sensitivity": 0.5416666666666666,
+        "specificity": 0.9083333333333333,
+        "positives": 120,
+        "negatives": 120,
+        "threshold": 0.5,
+        "auc": 0.8023611111111111,
+        "sensitivity_at_95_spec": 0.43333333333333335,
+        "epoch": 8,
+        "train_loss": 0.4272344708442688,
+        "lr": 0.0006199860316427725
+      },
+      "test": {
+        "accuracy": 0.725,
+        "f1": 0.6451612903225806,
+        "precision": 0.9090909090909091,
+        "recall": 0.5,
+        "sensitivity": 0.5,
+        "specificity": 0.95,
+        "confusion_matrix": [
+          [
+            114,
+            6
+          ],
+          [
+            60,
+            60
+          ]
+        ],
+        "n": 240,
+        "positives": 120,
+        "negatives": 120,
+        "threshold": 0.5,
+        "auc": 0.8344444444444444,
+        "sensitivity_at_95_spec": 0.525,
+        "ppv": 0.9090909090909091,
+        "npv": 0.6551724137931034,
+        "average_precision": 0.8587226876359356,
+        "brier": 0.20067208184427476,
+        "sensitivity_at_85_spec": 0.65,
+        "threshold_at_85_spec": 0.2709198594093323,
+        "sensitivity_at_90_spec": 0.6333333333333333,
+        "threshold_at_90_spec": 0.33293184638023376,
+        "threshold_at_95_spec": 0.49063557386398315
+      }
+    },
+    "glauco_fusion_gleam_crossattn": {
+      "config": "configs/glaucoma_fusion_gleam_crossattn.yaml",
+      "val": {
+        "accuracy": 0.5583333333333333,
+        "macro_f1": 0.505776233487055,
+        "macro_precision": 0.49977736463999634,
+        "macro_recall": 0.5166666666666667,
+        "per_class_f1": {
+          "0": 0.6905829596412556,
+          "1": 0.2823529411764706,
+          "2": 0.367816091954023,
+          "3": 0.6823529411764706
+        },
+        "per_class_metrics": {
+          "0": {
+            "precision": 0.7475728155339806,
+            "recall": 0.6416666666666667,
+            "f1": 0.6905829596412557,
+            "support": 120
+          },
+          "1": {
+            "precision": 0.26666666666666666,
+            "recall": 0.3,
+            "f1": 0.2823529411764706,
+            "support": 40
+          },
+          "2": {
+            "precision": 0.3404255319148936,
+            "recall": 0.4,
+            "f1": 0.36781609195402304,
+            "support": 40
+          },
+          "3": {
+            "precision": 0.6444444444444445,
+            "recall": 0.725,
+            "f1": 0.6823529411764706,
+            "support": 40
+          }
+        },
+        "confusion_matrix": [
+          [
+            77,
+            23,
+            16,
+            4
+          ],
+          [
+            17,
+            12,
+            8,
+            3
+          ],
+          [
+            8,
+            7,
+            16,
+            9
+          ],
+          [
+            1,
+            3,
+            7,
+            29
+          ]
+        ],
+        "n": 240,
+        "epoch": 27,
+        "train_loss": 0.15315933818152797,
+        "lr": 8.67390219611516e-05
+      },
+      "test": {
+        "accuracy": 0.5541666666666667,
+        "macro_f1": 0.4711332211332212,
+        "macro_precision": 0.4586536066332159,
+        "macro_recall": 0.4979166666666667,
+        "per_class_f1": {
+          "0": 0.6837606837606838,
+          "1": 0.21621621621621623,
+          "2": 0.2702702702702703,
+          "3": 0.7142857142857143
+        },
+        "per_class_metrics": {
+          "0": {
+            "precision": 0.7017543859649122,
+            "recall": 0.6666666666666666,
+            "f1": 0.6837606837606838,
+            "support": 120
+          },
+          "1": {
+            "precision": 0.23529411764705882,
+            "recall": 0.2,
+            "f1": 0.2162162162162162,
+            "support": 40
+          },
+          "2": {
+            "precision": 0.29411764705882354,
+            "recall": 0.25,
+            "f1": 0.27027027027027023,
+            "support": 40
+          },
+          "3": {
+            "precision": 0.603448275862069,
+            "recall": 0.875,
+            "f1": 0.7142857142857142,
+            "support": 40
+          }
+        },
+        "confusion_matrix": [
+          [
+            80,
+            22,
+            12,
+            6
+          ],
+          [
+            16,
+            8,
+            9,
+            7
+          ],
+          [
+            16,
+            4,
+            10,
+            10
+          ],
+          [
+            2,
+            0,
+            3,
+            35
+          ]
+        ],
+        "n": 240,
+        "binary_remapped": {
+          "accuracy": 0.6875,
+          "f1": 0.6963562753036437,
+          "precision": 0.6771653543307087,
+          "recall": 0.7166666666666667,
+          "sensitivity": 0.7166666666666667,
+          "specificity": 0.6583333333333333,
+          "confusion_matrix": [
+            [
+              79,
+              41
+            ],
+            [
+              34,
+              86
+            ]
+          ],
+          "n": 240,
+          "positives": 120,
+          "negatives": 120,
+          "threshold": 0.5,
+          "auc": 0.804513888888889,
+          "sensitivity_at_95_spec": 0.5333333333333333,
+          "ppv": 0.6771653543307087,
+          "npv": 0.6991150442477876,
+          "average_precision": 0.8455757117840804,
+          "brier": 0.22734451980434908,
+          "sensitivity_at_85_spec": 0.6416666666666667,
+          "threshold_at_85_spec": 0.8825292587280273,
+          "sensitivity_at_90_spec": 0.5833333333333334,
+          "threshold_at_90_spec": 0.9442538022994995,
+          "threshold_at_95_spec": 0.9704705476760864
+        }
+      }
+    }
+  },
+  "specialists": {
+    "glauco_efficientnet_harvard_gf_full": {
+      "label": "OCT/RNFLT \u00b7 Harvard-GF",
+      "metrics": {
+        "accuracy": 0.7766666666666666,
+        "macro_f1": 0.7715260017050298,
+        "per_class_f1": {
+          "0": 0.7372549019607844,
+          "1": 0.8057971014492754
+        },
+        "confusion_matrix": [
+          [
+            94,
+            30
+          ],
+          [
+            37,
+            139
+          ]
+        ],
+        "n": 300,
+        "f1": 0.8057971014492754,
+        "positives": 176,
+        "negatives": 124,
+        "auc": 0.8378390762463344,
+        "sensitivity_at_95_spec": 0.4772727272727273,
+        "epoch": 25,
+        "train_loss": 0.08668371587991715,
+        "lr": 0.0001
+      },
+      "external": {
+        "checkpoint": "C:\\Users\\HP\\OneDrive\\Desktop\\OCT\\checkpoints\\glauco_efficientnet_harvard_gf_full\\best.pt",
+        "device": "cuda",
+        "epoch": 25,
+        "num_classes": 2,
+        "harvard_gf_test": {
+          "accuracy": 0.7555555555555555,
+          "f1": 0.7703549060542797,
+          "n": 900,
+          "positives": 489,
+          "negatives": 411,
+          "auc": 0.8377367784693924,
+          "sensitivity_at_95_spec": 0.5685071574642127,
+          "threshold": 0.5,
+          "sensitivity": 0.754601226993865,
+          "specificity": 0.7566909975669099,
+          "ppv": 0.7867803837953091,
+          "npv": 0.7215777262180975,
+          "confusion_matrix": [
+            [
+              311,
+              100
+            ],
+            [
+              120,
+              369
+            ]
+          ],
+          "average_precision": 0.877502791715121,
+          "brier": 0.20625581337938254,
+          "sensitivity_at_85_spec": 0.6850715746421268,
+          "threshold_at_85_spec": 0.8874396085739136,
+          "sensitivity_at_90_spec": 0.6421267893660532,
+          "threshold_at_90_spec": 0.9749768376350403,
+          "threshold_at_95_spec": 0.9990936517715454
+        }
+      }
+    },
+    "glauco_retfound_cfp_airogs_light": {
+      "label": "Fundus \u00b7 AIROGS-light",
+      "metrics": {
+        "accuracy": 0.9363636363636364,
+        "macro_f1": 0.9363583767253492,
+        "per_class_f1": {
+          "0": 0.9369369369369369,
+          "1": 0.9357798165137615
+        },
+        "confusion_matrix": [
+          [
+            364,
+            21
+          ],
+          [
+            28,
+            357
+          ]
+        ],
+        "n": 770,
+        "f1": 0.9357798165137615,
+        "positives": 385,
+        "negatives": 385,
+        "auc": 0.9829920728622028,
+        "sensitivity_at_95_spec": 0.9246753246753247,
+        "epoch": 30,
+        "train_loss": 0.018107151091098787,
+        "lr": 9.340076784094411e-05
+      },
+      "external": {
+        "checkpoint": "checkpoints\\glauco_retfound_cfp_airogs_light\\best.pt",
+        "device": "cuda",
+        "epoch": 30,
+        "num_classes": 2,
+        "airogs_light_holdout_test": {
+          "accuracy": 0.9194805194805195,
+          "f1": 0.9194805194805195,
+          "n": 770,
+          "positives": 385,
+          "negatives": 385,
+          "auc": 0.9686894923258559,
+          "sensitivity_at_95_spec": 0.8285714285714286,
+          "threshold": 0.5,
+          "sensitivity": 0.9194805194805195,
+          "specificity": 0.9194805194805195,
+          "ppv": 0.9194805194805195,
+          "npv": 0.9194805194805195,
+          "confusion_matrix": [
+            [
+              354,
+              31
+            ],
+            [
+              31,
+              354
+            ]
+          ],
+          "average_precision": 0.9666912771913798,
+          "brier": 0.07400675301103987,
+          "sensitivity_at_85_spec": 0.9532467532467532,
+          "threshold_at_85_spec": 0.03879070654511452,
+          "sensitivity_at_90_spec": 0.9272727272727272,
+          "threshold_at_90_spec": 0.33875828981399536,
+          "threshold_at_95_spec": 0.9910486936569214
+        }
+      }
+    },
+    "glauco_efficientnet_harvard_gd_full": {
+      "label": "OCT/RNFLT \u00b7 Harvard-GD",
+      "metrics": {
+        "accuracy": 0.83,
+        "macro_f1": 0.8295739348370927,
+        "per_class_f1": {
+          "0": 0.8380952380952381,
+          "1": 0.8210526315789474
+        },
+        "confusion_matrix": [
+          [
+            44,
+            5
+          ],
+          [
+            12,
+            39
+          ]
+        ],
+        "n": 100,
+        "f1": 0.8210526315789474,
+        "positives": 51,
+        "negatives": 49,
+        "auc": 0.9129651860744299,
+        "sensitivity_at_95_spec": 0.43137254901960786,
+        "epoch": 26,
+        "train_loss": 0.041818118343750633,
+        "lr": 0.0001
+      }
+    },
+    "glauco_fusion_gleam_crossattn": {
+      "label": "Dual fusion (RETFound+Eff, prior)",
+      "metrics": {
+        "accuracy": 0.5583333333333333,
+        "macro_f1": 0.505776233487055,
+        "macro_precision": 0.49977736463999634,
+        "macro_recall": 0.5166666666666667,
+        "per_class_f1": {
+          "0": 0.6905829596412556,
+          "1": 0.2823529411764706,
+          "2": 0.367816091954023,
+          "3": 0.6823529411764706
+        },
+        "per_class_metrics": {
+          "0": {
+            "precision": 0.7475728155339806,
+            "recall": 0.6416666666666667,
+            "f1": 0.6905829596412557,
+            "support": 120
+          },
+          "1": {
+            "precision": 0.26666666666666666,
+            "recall": 0.3,
+            "f1": 0.2823529411764706,
+            "support": 40
+          },
+          "2": {
+            "precision": 0.3404255319148936,
+            "recall": 0.4,
+            "f1": 0.36781609195402304,
+            "support": 40
+          },
+          "3": {
+            "precision": 0.6444444444444445,
+            "recall": 0.725,
+            "f1": 0.6823529411764706,
+            "support": 40
+          }
+        },
+        "confusion_matrix": [
+          [
+            77,
+            23,
+            16,
+            4
+          ],
+          [
+            17,
+            12,
+            8,
+            3
+          ],
+          [
+            8,
+            7,
+            16,
+            9
+          ],
+          [
+            1,
+            3,
+            7,
+            29
+          ]
+        ],
+        "n": 240,
+        "epoch": 27,
+        "train_loss": 0.15315933818152797,
+        "lr": 8.67390219611516e-05
+      },
+      "external": {
+        "checkpoint": "checkpoints\\glauco_fusion_gleam_crossattn\\best.pt",
+        "device": "cuda",
+        "epoch": 27,
+        "num_classes": 4,
+        "gleam_paired_test": {
+          "accuracy": 0.5541666666666667,
+          "macro_f1": 0.4711332211332212,
+          "macro_precision": 0.4586536066332159,
+          "macro_recall": 0.4979166666666667,
+          "per_class_f1": {
+            "0": 0.6837606837606838,
+            "1": 0.21621621621621623,
+            "2": 0.2702702702702703,
+            "3": 0.7142857142857143
+          },
+          "per_class_metrics": {
+            "0": {
+              "precision": 0.7017543859649122,
+              "recall": 0.6666666666666666,
+              "f1": 0.6837606837606838,
+              "support": 120
+            },
+            "1": {
+              "precision": 0.23529411764705882,
+              "recall": 0.2,
+              "f1": 0.2162162162162162,
+              "support": 40
+            },
+            "2": {
+              "precision": 0.29411764705882354,
+              "recall": 0.25,
+              "f1": 0.27027027027027023,
+              "support": 40
+            },
+            "3": {
+              "precision": 0.603448275862069,
+              "recall": 0.875,
+              "f1": 0.7142857142857142,
+              "support": 40
+            }
+          },
+          "confusion_matrix": [
+            [
+              80,
+              22,
+              12,
+              6
+            ],
+            [
+              16,
+              8,
+              9,
+              7
+            ],
+            [
+              16,
+              4,
+              10,
+              10
+            ],
+            [
+              2,
+              0,
+              3,
+              35
+            ]
+          ],
+          "n": 240,
+          "binary_remapped": {
+            "accuracy": 0.6875,
+            "f1": 0.6963562753036437,
+            "precision": 0.6771653543307087,
+            "recall": 0.7166666666666667,
+            "sensitivity": 0.7166666666666667,
+            "specificity": 0.6583333333333333,
+            "confusion_matrix": [
+              [
+                79,
+                41
+              ],
+              [
+                34,
+                86
+              ]
+            ],
+            "n": 240,
+            "positives": 120,
+            "negatives": 120,
+            "threshold": 0.5,
+            "auc": 0.804513888888889,
+            "sensitivity_at_95_spec": 0.5333333333333333,
+            "ppv": 0.6771653543307087,
+            "npv": 0.6991150442477876,
+            "average_precision": 0.8455757117840804,
+            "brier": 0.22734451980434908,
+            "sensitivity_at_85_spec": 0.6416666666666667,
+            "threshold_at_85_spec": 0.8825292587280273,
+            "sensitivity_at_90_spec": 0.5833333333333334,
+            "threshold_at_90_spec": 0.9442538022994995,
+            "threshold_at_95_spec": 0.9704705476760864
+          }
+        }
+      }
+    }
+  }
+}

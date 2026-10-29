@@ -1,0 +1,47 @@
+# Tri-modal v2: longer train + light backbone unfreeze after warmup
+run_name: glauco_fusion_gleam_trimodal_xattn_v2
+binary: false
+num_classes: 4
+monitor: macro_f1
+
+fusion:
+  enabled: true
+  trimodal: true
+  type: cross_attention
+  keep_frozen: false
+  embed_dim: 512
+  num_heads: 8
+  dropout: 0.15
+  oct:
+    name: efficientnet_b0
+    pretrained: true
+    freeze: true
+  fundus:
+    name: efficientnet_b0
+    pretrained: true
+    freeze: true
+  vf:
+    name: efficientnet_b0
+    pretrained: true
+    freeze: true
+
+data:
+  train_csv: data/processed/glaucoma/catalogs/gleam_paired_train.csv
+  test_csv: data/processed/glaucoma/catalogs/gleam_paired_val.csv
+  class_weights: data/processed/glaucoma/stats/gleam_paired_class_weights.json
+  image_size: 224
+
+batch_size: 12
+epochs: 60
+patience: 18
+blr: 0.008
+head_warmup_epochs: 12
+warmup_epochs: 8
+cosine: true
+min_lr: 1.0e-6
+weight_decay: 0.05
+backbone_lr_scale: 0.05
+amp: true
+num_workers: 2
+seed: 42
+balance_classes: true

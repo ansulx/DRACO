@@ -1,0 +1,43 @@
+# GLAUCO — Cross-attention fusion on GLEAM paired fundus (SLO) + cpOCT thickness
+# Replaces GAMMA (300) — GLEAM has 1,200 official paired samples.
+run_name: glauco_fusion_gleam_crossattn
+binary: false
+num_classes: 4
+monitor: macro_f1
+
+fusion:
+  enabled: true
+  type: cross_attention
+  embed_dim: 512
+  num_heads: 8
+  dropout: 0.1
+  oct:
+    name: efficientnet_b0
+    pretrained: true
+    freeze: true
+  fundus:
+    name: retfound_cfp
+    pretrained: true
+    checkpoint: checkpoints/weights/RETFound_cfp.pth
+    freeze: true
+
+data:
+  train_csv: data/processed/glaucoma/catalogs/gleam_paired_train.csv
+  test_csv: data/processed/glaucoma/catalogs/gleam_paired_val.csv
+  class_weights: data/processed/glaucoma/stats/gleam_paired_class_weights.json
+  image_size: 224
+
+batch_size: 8
+epochs: 50
+patience: 15
+blr: 0.005
+head_warmup_epochs: 3
+warmup_epochs: 5
+cosine: true
+min_lr: 1.0e-6
+weight_decay: 0.05
+backbone_lr_scale: 0.1
+amp: true
+num_workers: 2
+seed: 42
+balance_classes: true
