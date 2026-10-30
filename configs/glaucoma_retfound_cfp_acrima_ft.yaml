@@ -1,0 +1,35 @@
+# GLAUCO — fine-tune AIROGS RETFound-CFP on ACRIMA (OD-cropped hire set)
+run_name: glauco_retfound_cfp_acrima_ft
+modality: fundus
+binary: true
+num_classes: 2
+monitor: auc
+
+# Start from the AIROGS specialist (domain-shift adaptation experiment)
+init_checkpoint: checkpoints/glauco_retfound_cfp_airogs_light/best.pt
+
+model:
+  name: retfound_cfp
+  pretrained: false
+  checkpoint: checkpoints/weights/RETFound_cfp.pth
+
+data:
+  train_csv: data/processed/glaucoma/catalogs/acrima_train.csv
+  test_csv: data/processed/glaucoma/catalogs/acrima_test.csv
+  class_weights: data/processed/glaucoma/stats/acrima_class_weights.json
+  image_size: 224
+
+batch_size: 16
+epochs: 20
+patience: 8
+blr: 0.001
+layer_decay: 0.65
+head_warmup_epochs: 2
+warmup_epochs: 3
+cosine: true
+min_lr: 1.0e-6
+weight_decay: 0.05
+amp: true
+num_workers: 4
+seed: 42
+balance_classes: true

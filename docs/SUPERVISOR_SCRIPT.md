@@ -106,6 +106,12 @@ For **GLAUCO** (glaucoma):
 **Sentence for supervisor:**  
 “Among those four, only OEFI matches our current production modalities. We downloaded it, built same-eye pairs, and trained fusion on it. OCTA-500 and ROAD are the next modality branch, not something we force into today’s fundus/OCT models.”
 
+### Parth’s five fundus links (glaucoma hire) — 2–3 min
+
+**Full brief + get/test checklist:** [`SUPERVISOR_PARTH_BRIEF.md`](SUPERVISOR_PARTH_BRIEF.md) · PPT slides **5b / 5c**.
+
+**One-breath summary:** All five are **glaucoma fundus** (BIOMISA also has OCT). Only **Drishti** is **Indian** (Aravind). We hired Drishti/BEH as external Acc, ACRIMA as fine-tune data (AUC → 0.997), RIM-ONE as hard hospital OOD. **None** go into GHOTA/DR.
+
 ---
 
 ## 4. Technique — “this is how we train” (1.5 minutes)

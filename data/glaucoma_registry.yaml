@@ -151,14 +151,22 @@ catalogs:
   # Parth fundus external (GLAUCO only)
   acrima_train: data/processed/glaucoma/catalogs/acrima_train.csv
   acrima_test: data/processed/glaucoma/catalogs/acrima_test.csv
+  acrima_external: data/processed/glaucoma/catalogs/acrima_external.csv
   beh_train: data/processed/glaucoma/catalogs/beh_train.csv
   beh_test: data/processed/glaucoma/catalogs/beh_test.csv
+  beh_external: data/processed/glaucoma/catalogs/beh_external.csv
   rim_one_train: data/processed/glaucoma/catalogs/rim_one_train.csv
   rim_one_test: data/processed/glaucoma/catalogs/rim_one_test.csv
+  rim_one_hospital_test: data/processed/glaucoma/catalogs/rim_one_hospital_test.csv
   biomisa_od_train: data/processed/glaucoma/catalogs/biomisa_od_train.csv
   biomisa_od_test: data/processed/glaucoma/catalogs/biomisa_od_test.csv
   drishti_train: data/processed/glaucoma/catalogs/drishti_train.csv
   drishti_test: data/processed/glaucoma/catalogs/drishti_test.csv
+  drishti_full: data/processed/glaucoma/catalogs/drishti_full.csv
+  # Experiment reports
+  # results/glaucoma_parth_external.json
+  # results/glaucoma_parth_acrima_ft_external.json
+  # docs/PARTH_EXTERNAL_RESULTS.md
 
 # ---------------------------------------------------------------------------
 # Model targets (from 2025–2026 literature)

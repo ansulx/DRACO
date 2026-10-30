@@ -244,8 +244,19 @@ def main() -> None:
 
     model = build_from_config(cfg, num_classes=num_classes).to(device)
 
-    # Fresh classifier head (official RETFound reinits head after loading MAE)
-    if hasattr(model, "head") and hasattr(model.head, "weight"):
+    init_ckpt = cfg.get("init_checkpoint")
+    if init_ckpt:
+        # Continue from a prior GLAUCO run (e.g. AIROGS → Parth external FT).
+        ckpt_path = ROOT / init_ckpt if not Path(init_ckpt).is_absolute() else Path(init_ckpt)
+        blob = torch.load(ckpt_path, map_location=device, weights_only=False)
+        state = blob["model"] if isinstance(blob, dict) and "model" in blob else blob
+        missing, unexpected = model.load_state_dict(state, strict=False)
+        print(
+            f"Loaded init_checkpoint {ckpt_path.name} "
+            f"(missing={len(missing)}, unexpected={len(unexpected)})"
+        )
+    elif hasattr(model, "head") and hasattr(model.head, "weight"):
+        # Fresh classifier head (official RETFound reinits head after loading MAE)
         nn.init.trunc_normal_(model.head.weight, std=2e-5)
         if model.head.bias is not None:
             nn.init.zeros_(model.head.bias)

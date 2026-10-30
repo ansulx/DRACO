@@ -3,9 +3,10 @@
 **One line:** We split diseases cleanly — **GLAUCO = glaucoma**, **GHOTA = diabetic 3-class severity** — with modality routing (no fake mixing) and real paired fusion on OEFI.
 
 **Open these first**
-1. `SUPERVISOR_Showcase.pptx` (this folder / repo root)
+1. `SUPERVISOR_Showcase.pptx` (this folder / repo root) — slides **5b / 5c** = Parth hire
 2. This file
-3. Optional deep dives: `GLAUCOMA_RESULTS_2026.md` · `GHOTA_RESULTS.md` · `MENTOR_FOUR_DATASETS.md`
+3. **Parth get · test · short script:** [`SUPERVISOR_PARTH_BRIEF.md`](SUPERVISOR_PARTH_BRIEF.md)
+4. Optional deep dives: `GLAUCOMA_RESULTS_2026.md` · `GHOTA_RESULTS.md` · `MENTOR_FOUR_DATASETS.md` · `PARTH_EXTERNAL_RESULTS.md`
 
 ---
 
@@ -66,6 +67,34 @@ Lit bar (HAMM tri-modal): Acc ~0.81 · F1 ~0.76 · AUROC ~0.93 — we are compet
 | 4 | [DcardNet 2006.05480](https://arxiv.org/abs/2006.05480) | Idea only | Cite as related work — **no public data** |
 
 **Same-modality extras also on disk:** IDRiD fundus · Kermany OCT (optional scale).
+
+---
+
+## 4b. Parth fundus packs (Oct 16) — all **glaucoma**, not DR
+
+Full specs: [`PARTH_DATASET_SPECS.md`](PARTH_DATASET_SPECS.md)
+
+| Dataset | Disease | Modality | n | Region | India? |
+|---------|---------|----------|---|--------|--------|
+| **Drishti-GS1** | Glaucoma | Fundus + OD/cup GT | 101 | **Aravind, Madurai** | **YES** |
+| ACRIMA | Glaucoma | Fundus (OD-crop) | 705 | Spain | No |
+| RIM-ONE DL | Glaucoma | Fundus (+ OD/cup) | 485 | Spain | No |
+| BEH | Glaucoma | Fundus | 634 | Bangladesh | No |
+| BIOMISA | Glaucoma (+ macula*) | Fundus + OCT | 79 OD / 44 pts | Pakistan | No |
+
+\*BIOMISA Macula has DME/AMD/CSR — not ICDR DR grades.  
+**Indian DR for GHOTA:** IDRiD + APTOS (separate from these five).
+
+**Experiments run (AIROGS RETFound-CFP):**
+
+| Set | Zero-shot AUC | After ACRIMA FT | Action |
+|-----|--------------:|----------------:|--------|
+| Drishti (India) | **0.89–0.95** | ~0.89 | Hire as Indian external |
+| BEH | **0.78** | ~0.77 | Hire light |
+| ACRIMA | 0.58 | **0.997** | Hire for OD-crop adaptation |
+| RIM-ONE hospital | 0.57 | 0.51 | Hire as hard domain-shift bench |
+
+Detail: [`PARTH_EXTERNAL_RESULTS.md`](PARTH_EXTERNAL_RESULTS.md)
 
 ---
 

@@ -1,0 +1,171 @@
+{
+  "checkpoint": "checkpoints\\glauco_retfound_cfp_acrima_ft\\best.pt",
+  "device": "cuda",
+  "epoch": 15,
+  "num_classes": 2,
+  "acrima_test": {
+    "accuracy": 0.9716312056737588,
+    "f1": 0.9743589743589743,
+    "precision": 0.987012987012987,
+    "recall": 0.9620253164556962,
+    "sensitivity": 0.9620253164556962,
+    "specificity": 0.9838709677419355,
+    "confusion_matrix": [
+      [
+        61,
+        1
+      ],
+      [
+        3,
+        76
+      ]
+    ],
+    "n": 141,
+    "positives": 79,
+    "negatives": 62,
+    "threshold": 0.5,
+    "auc": 0.9971416904859126,
+    "sensitivity_at_95_spec": 0.9873417721518988,
+    "ppv": 0.987012987012987,
+    "npv": 0.953125,
+    "average_precision": 0.9978045881047799,
+    "brier": 0.023218458953388612,
+    "sensitivity_at_85_spec": 1.0,
+    "threshold_at_85_spec": 0.08993039280176163,
+    "sensitivity_at_90_spec": 1.0,
+    "threshold_at_90_spec": 0.08993039280176163,
+    "threshold_at_95_spec": 0.16693012416362762
+  },
+  "rim_one_hospital_test": {
+    "accuracy": 0.4827586206896552,
+    "f1": 0.4444444444444444,
+    "precision": 0.33962264150943394,
+    "recall": 0.6428571428571429,
+    "sensitivity": 0.6428571428571429,
+    "specificity": 0.4067796610169492,
+    "confusion_matrix": [
+      [
+        48,
+        70
+      ],
+      [
+        20,
+        36
+      ]
+    ],
+    "n": 174,
+    "positives": 56,
+    "negatives": 118,
+    "threshold": 0.5,
+    "auc": 0.5130145278450364,
+    "sensitivity_at_95_spec": 0.03571428571428571,
+    "ppv": 0.33962264150943394,
+    "npv": 0.7058823529411765,
+    "average_precision": 0.34510156022033706,
+    "brier": 0.3940334477599242,
+    "sensitivity_at_85_spec": 0.10714285714285714,
+    "threshold_at_85_spec": 0.9869825839996338,
+    "sensitivity_at_90_spec": 0.05357142857142857,
+    "threshold_at_90_spec": 0.9954890608787537,
+    "threshold_at_95_spec": 0.9997966885566711
+  },
+  "drishti_full": {
+    "accuracy": 0.801980198019802,
+    "f1": 0.8484848484848485,
+    "precision": 0.9032258064516129,
+    "recall": 0.8,
+    "sensitivity": 0.8,
+    "specificity": 0.8064516129032258,
+    "confusion_matrix": [
+      [
+        25,
+        6
+      ],
+      [
+        14,
+        56
+      ]
+    ],
+    "n": 101,
+    "positives": 70,
+    "negatives": 31,
+    "threshold": 0.5,
+    "auc": 0.8857142857142857,
+    "sensitivity_at_95_spec": 0.5,
+    "ppv": 0.9032258064516129,
+    "npv": 0.6410256410256411,
+    "average_precision": 0.9357237514577426,
+    "brier": 0.1648915101389861,
+    "sensitivity_at_85_spec": 0.7571428571428571,
+    "threshold_at_85_spec": 0.9522352814674377,
+    "sensitivity_at_90_spec": 0.6285714285714286,
+    "threshold_at_90_spec": 0.9989296793937683,
+    "threshold_at_95_spec": 0.9997645020484924
+  },
+  "beh_external": {
+    "accuracy": 0.7854889589905363,
+    "f1": 0.6046511627906976,
+    "precision": 0.6011560693641619,
+    "recall": 0.6081871345029239,
+    "sensitivity": 0.6081871345029239,
+    "specificity": 0.8509719222462203,
+    "confusion_matrix": [
+      [
+        394,
+        69
+      ],
+      [
+        67,
+        104
+      ]
+    ],
+    "n": 634,
+    "positives": 171,
+    "negatives": 463,
+    "threshold": 0.5,
+    "auc": 0.7735149609083906,
+    "sensitivity_at_95_spec": 0.3684210526315789,
+    "ppv": 0.6011560693641619,
+    "npv": 0.8546637744034707,
+    "average_precision": 0.5958249260222246,
+    "brier": 0.1961260099901596,
+    "sensitivity_at_85_spec": 0.6081871345029239,
+    "threshold_at_85_spec": 0.6446499228477478,
+    "sensitivity_at_90_spec": 0.543859649122807,
+    "threshold_at_90_spec": 0.9421058893203735,
+    "threshold_at_95_spec": 0.999482274055481
+  },
+  "drishti_official_test": {
+    "accuracy": 0.8431372549019608,
+    "f1": 0.8857142857142857,
+    "precision": 0.96875,
+    "recall": 0.8157894736842105,
+    "sensitivity": 0.8157894736842105,
+    "specificity": 0.9230769230769231,
+    "confusion_matrix": [
+      [
+        12,
+        1
+      ],
+      [
+        7,
+        31
+      ]
+    ],
+    "n": 51,
+    "positives": 38,
+    "negatives": 13,
+    "threshold": 0.5,
+    "auc": 0.9392712550607287,
+    "sensitivity_at_95_spec": 0.8157894736842105,
+    "ppv": 0.96875,
+    "npv": 0.631578947368421,
+    "average_precision": 0.9814753336960016,
+    "brier": 0.12526038174739,
+    "sensitivity_at_85_spec": 0.8421052631578947,
+    "threshold_at_85_spec": 0.3398692011833191,
+    "sensitivity_at_90_spec": 0.8421052631578947,
+    "threshold_at_90_spec": 0.3398692011833191,
+    "threshold_at_95_spec": 0.9675636887550354
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "checkpoint": "checkpoints\\glauco_retfound_cfp_airogs_light\\best.pt",
+  "hire": {
+    "acrima_external": {
+      "n": 705,
+      "auc": 0.5775963518681965,
+      "accuracy": 0.4524822695035461,
+      "f1": 0.08530805687203792,
+      "sensitivity": 0.045454545454545456,
+      "specificity": 0.9741100323624595,
+      "sensitivity_at_95_spec": 0.06565656565656566
+    },
+    "rim_one_hospital_test": {
+      "n": 174,
+      "auc": 0.5674939467312349,
+      "accuracy": 0.6896551724137931,
+      "f1": 0.12903225806451613,
+      "sensitivity": 0.07142857142857142,
+      "specificity": 0.9830508474576272,
+      "sensitivity_at_95_spec": 0.14285714285714285
+    },
+    "drishti_full": {
+      "n": 101,
+      "auc": 0.8898617511520738,
+      "accuracy": 0.8118811881188119,
+      "f1": 0.8527131782945736,
+      "sensitivity": 0.7857142857142857,
+      "specificity": 0.8709677419354839,
+      "sensitivity_at_95_spec": 0.37142857142857144
+    },
+    "beh_external": {
+      "n": 634,
+      "auc": 0.7820974322054235,
+      "accuracy": 0.7933753943217665,
+      "f1": 0.6042296072507553,
+      "sensitivity": 0.5847953216374269,
+      "specificity": 0.8704103671706264,
+      "sensitivity_at_95_spec": 0.36257309941520466
+    }
+  },
+  "extra": {
+    "rim_one_full": {
+      "n": 485,
+      "auc": 0.4270190950293483,
+      "accuracy": 0.6577319587628866,
+      "f1": 0.14432989690721648
+    },
+    "drishti_official_test": {
+      "n": 51,
+      "auc": 0.9514170040485831,
+      "accuracy": 0.8627450980392157,
+      "f1": 0.8985507246376812
+    }
+  }
+}
