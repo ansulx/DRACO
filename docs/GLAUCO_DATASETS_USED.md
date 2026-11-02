@@ -99,7 +99,7 @@ EXTERNAL ONLY (never train peak on these)
 
 | # | Dataset | What it is | Classes | Best Acc signal | Edge pack? |
 |---|---------|------------|--------:|-----------------|------------|
-| 1 | **Harvard-GD** | RNFLT maps (smoke → solid Acc) | **2** | AUC **0.913** · Acc **0.83** (EfficientNet) | **Yes** → `glauco_oct_rnflt_edge.pth` |
+| 1 | **Harvard-GD** | RNFLT maps (smoke → solid Acc) | **2** | Acc **0.87** · Sens **0.88** · AUC **0.906** (EffNet Acc-peak) | **Yes** → `glauco_oct_rnflt_edge.pth` |
 | 2 | **Harvard-GDP** | RNFLT, larger / progression | **2** | AUC **0.855** | No (research) |
 | 3 | **Harvard-GF** | RNFLT (+ B-scan available) | **2** | AUC **0.838** | No (research) |
 | 4 | **GLEAM OCT** | cpOCT thickness (paired) | **4** staging | Specialist Acc ~0.52 (hard) | Via fusion track |
@@ -126,7 +126,7 @@ Also: **RETFound-RNFLT** on Harvard-GD (AUC **0.883**) — heavy; EfficientNet G
 | Architecture | EfficientNet-B0 |
 | Classes | **2** — normal / glaucoma |
 | Params / weights | **4.01 M** / **15.5 MB** |
-| AUC / Acc | **0.913** / **0.83** |
+| Acc / Sens / AUC | **0.87** / **0.88** / **0.906** (thr 0.55) |
 
 ---
 

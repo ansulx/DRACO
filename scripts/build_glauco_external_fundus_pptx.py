@@ -382,12 +382,12 @@ def build() -> list[Path]:
 
     _textbox(s, Inches(0.4), Inches(3.05), Inches(12.5), Inches(0.35), "OCT peak · Harvard-GD test (glauco_oct_rnflt_edge.pth)", size=14, bold=True, color=NAVY)
     metrics_o = [
-        ("0.830", "Accuracy", TEAL),
-        ("0.886", "Precision", TEAL),
-        ("0.765", "Recall / Sens", GREEN),
-        ("0.898", "Specificity", GREEN),
-        ("0.821", "F1", TEAL),
-        ("0.913", "AUC", NAVY),
+        ("0.870", "Accuracy", TEAL),
+        ("0.865", "Precision", TEAL),
+        ("0.882", "Recall / Sens", GREEN),
+        ("0.857", "Specificity", GREEN),
+        ("0.874", "F1", TEAL),
+        ("0.906", "AUC", NAVY),
     ]
     for i, (val, lab, acc) in enumerate(metrics_o):
         _kpi(s, Inches(0.35 + i * 2.15), Inches(3.45), val, lab, accent=acc, w=2.0, h=1.15)
@@ -403,7 +403,7 @@ def build() -> list[Path]:
         Inches(12.2),
         Inches(1.2),
         "Fundus: Acc / Sens / Spec / F1 all ≈ 0.92, AUC 0.97 on holdout — balanced binary screen.\n"
-        "OCT edge: lighter model (4M params, ~15 MB) — Acc 0.83, Spec 0.90, Sens 0.77, AUC 0.91.\n"
+        "OCT edge: lighter model (4M params, ~15 MB) — Acc 0.87, Sens 0.88, Spec 0.86, AUC 0.91 (thr 0.55).\n"
         "Extra clinical knob: fundus Sens @ 95% Spec = 0.83 (holdout).",
         size=14,
         color=INK,
@@ -451,7 +451,7 @@ def build() -> list[Path]:
     chart_data2 = CategoryChartData()
     chart_data2.categories = ["Acc", "Prec", "Sens", "Spec", "F1", "AUC"]
     chart_data2.add_series("Fundus (AIROGS)", (0.920, 0.920, 0.920, 0.920, 0.920, 0.969))
-    chart_data2.add_series("OCT (Harvard-GD)", (0.830, 0.886, 0.765, 0.898, 0.821, 0.913))
+    chart_data2.add_series("OCT (Harvard-GD)", (0.870, 0.865, 0.882, 0.857, 0.874, 0.906))
     chart2 = s.shapes.add_chart(
         XL_CHART_TYPE.COLUMN_CLUSTERED,
         Inches(0.4),
@@ -554,8 +554,8 @@ def build() -> list[Path]:
             "Train: Harvard-GD · 2 classes",
             "Arch: EfficientNet-B0 · 4.0 M params",
             "Weights ~15.5 MB · peak CUDA ~43 MB",
-            "Test: Acc 0.83 · AUC 0.913",
-            "Full card: sens/spec/prec/rec/F1",
+            "Test: Acc 0.87 · Sens 0.88 · AUC 0.906",
+            "Thr 0.55 · full sens/spec/F1 card",
         ]
     ):
         _textbox(s, Inches(7.05), Inches(2.25 + i * 0.7), Inches(5.6), Inches(0.55), "▸  " + line, size=14, color=INK)
@@ -570,7 +570,7 @@ def build() -> list[Path]:
         ("Classes", "Peak packs are 2-class: normal vs glaucoma."),
         ("Problem", "Binary screening with honest train/test split + domain-shift awareness."),
         ("Method", "Specialists → external OOD → adapt OD-crop → export .pth + metric card."),
-        ("Results", "Fundus AUC 0.97 · OCT AUC 0.91 · Drishti 0.89–0.95 — then show the bars."),
+        ("Results", "Fundus AUC 0.97 · OCT Acc 0.87 / Sens 0.88 · Drishti 0.89–0.95 — then bars."),
     ]
     for i, (h, body) in enumerate(points):
         y = Inches(1.3 + i * 0.9)

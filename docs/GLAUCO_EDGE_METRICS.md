@@ -11,7 +11,7 @@
 | **Peak fundus Acc** | `exports/glauco_edge/glauco_fundus_peak.pth` | RETFound-CFP · AIROGS specialist |
 | Model card (JSON) | `exports/glauco_edge/glauco_fundus_peak_model_card.json` | Machine-readable |
 | Model card (MD) | `exports/glauco_edge/glauco_fundus_peak_MODEL_CARD.md` | Human readout |
-| **Edge-friendly OCT** | `exports/glauco_edge/glauco_oct_rnflt_edge.pth` | EfficientNet-B0 · Harvard-GD RNFLT |
+| **Edge-friendly OCT** | `exports/glauco_edge/glauco_oct_rnflt_edge.pth` | EfficientNet-B0 · Harvard-GD RNFLT · Acc-monitor + thr 0.55 |
 
 Rebuild:
 
@@ -75,17 +75,22 @@ Train-best (same run, val monitor): Acc 0.936 · F1 0.936 · AUC **0.983** · Se
 | Weights | **15.5 MB** |
 | Peak CUDA (1×infer) | **~43 MB** |
 
-### Metrics (Harvard-GD test)
+### Metrics (Harvard-GD test · improved Acc peak)
 
-| Metric | Value |
-|--------|------:|
-| Accuracy | 0.830 |
-| Precision | 0.886 |
-| Recall / Sensitivity | 0.765 |
-| Specificity | 0.898 |
-| F1 | 0.821 |
-| AUC | **0.913** |
-| Sens @ 95% Spec | 0.431 |
+Checkpoint: `checkpoints/glauco_efficientnet_harvard_gd_acc_plain/best.pt`  
+Recipe: same Eff-B0 as before, but **`monitor: accuracy`** (reclaims ep22 Acc 0.86 that AUC-monitor discarded) + operating **threshold 0.55**.
+
+| Metric | Old AUC-peak (thr 0.50) | **New Acc-peak (thr 0.55)** |
+|--------|------------------------:|----------------------------:|
+| Accuracy | 0.830 | **0.870** |
+| Precision | 0.886 | **0.865** |
+| Recall / Sensitivity | 0.765 | **0.882** |
+| Specificity | 0.898 | **0.857** |
+| F1 | 0.821 | **0.874** |
+| AUC | **0.913** | 0.906 |
+| Sens @ 95% Spec | 0.431 | 0.373 |
+
+Trade: **+4 pp Acc** and **+12 pp Sens** for ~0.7 pp AUC and ~4 pp Spec. Screening-first choice for edge.
 
 ---
 

@@ -125,18 +125,18 @@ This is the metric checklist slide.
 
 Extra clinical knob: **Sens @ 95% Spec ≈ 0.83**.
 
-**OCT peak — Harvard-GD test (edge-friendly):**
+**OCT peak — Harvard-GD test (edge-friendly, improved):**
 
 | Metric | Value |
 |--------|------:|
-| Accuracy | **0.830** |
-| Precision | **0.886** |
-| Recall / Sensitivity | **0.765** |
-| Specificity | **0.898** |
-| F1 | **0.821** |
-| AUC | **0.913** |
+| Accuracy | **0.870** |
+| Precision | **0.865** |
+| Recall / Sensitivity | **0.882** |
+| Specificity | **0.857** |
+| F1 | **0.874** |
+| AUC | **0.906** |
 
-How to say it: fundus is the **accuracy peak** (heavy model). OCT is **edge-friendly** — about **4M params**, **~15 MB**, still AUC **0.91**.
+How to say it: fundus is the heavy Acc peak. OCT is **edge-friendly** — **4M params**, **~15 MB**, Acc **0.87** / Sens **0.88** after Acc-monitor retrain + thr **0.55** (was Acc 0.83 / Sens 0.77).
 
 ---
 
@@ -183,7 +183,7 @@ What we hand the deploy team:
 | Pack | Train | Arch | Size | Headline |
 |------|-------|------|------|----------|
 | `glauco_fundus_peak.pth` | AIROGS-light | RETFound-CFP · 303M | ~1.1 GB | Acc 0.92 · AUC 0.97 |
-| `glauco_oct_rnflt_edge.pth` | Harvard-GD | EfficientNet-B0 · 4M | ~15.5 MB | Acc 0.83 · AUC 0.91 |
+| `glauco_oct_rnflt_edge.pth` | Harvard-GD | EfficientNet-B0 · 4M | ~15.5 MB | Acc 0.87 · Sens 0.88 · AUC 0.91 |
 
 Each pack includes the full metric card: Sens / Spec / Prec / Rec / F1 / Acc / AUC + params / memory.
 
@@ -222,7 +222,7 @@ Detail docs if they want more: `docs/GLAUCO_DATASETS_USED.md` · `docs/GLAUCO_ED
 |-------|--------|
 | Fundus in-domain AUC | **0.97** |
 | Indian Drishti external | **0.89** full / **0.95** official |
-| OCT Harvard-GD AUC | **0.91** |
+| OCT Harvard-GD Acc / Sens / AUC | **0.87 / 0.88 / 0.91** |
 | ACRIMA after FT | **0.997** (zero-shot was ~0.57) |
 
 ---
