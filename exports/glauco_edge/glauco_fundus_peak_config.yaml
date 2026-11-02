@@ -1,0 +1,28 @@
+amp: true
+balance_classes: true
+batch_size: 16
+binary: true
+blr: 0.005
+cosine: true
+data:
+  class_weights: data/processed/glaucoma/stats/airogs_light_class_weights.json
+  image_size: 224
+  test_csv: data/processed/glaucoma/catalogs/airogs_light_test.csv
+  train_csv: data/processed/glaucoma/catalogs/airogs_light_train.csv
+epochs: 40
+head_warmup_epochs: 5
+layer_decay: 0.65
+min_lr: 1.0e-06
+modality: fundus
+model:
+  checkpoint: checkpoints/weights/RETFound_cfp.pth
+  name: retfound_cfp
+  pretrained: false
+monitor: auc
+num_classes: 2
+num_workers: 4
+patience: 12
+run_name: glauco_retfound_cfp_airogs_light
+seed: 42
+warmup_epochs: 10
+weight_decay: 0.05

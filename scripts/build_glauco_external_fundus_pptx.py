@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
-"""Build GLAUCO external fundus dataset review PPT for supervisors."""
+"""Build GLAUCO supervisor PPT — story arc: disease → datasets → classes → problem → methods → results/graphs."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
 from pptx import Presentation
+from pptx.chart.data import CategoryChartData
 from pptx.dml.color import RGBColor
+from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.oxml.ns import qn
-from pptx.util import Inches, Pt, Emu
+from pptx.util import Inches, Pt
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTS = [
@@ -48,7 +50,6 @@ def _fill(shape, color: RGBColor):
 def _bg(slide):
     sh = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(7.5))
     _fill(sh, CREAM)
-    # subtle left accent
     accent = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(0.08), Inches(7.5))
     _fill(accent, TEAL)
 
@@ -56,7 +57,6 @@ def _bg(slide):
 def _banner(slide, title: str, subtitle: str):
     bar = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(1.05))
     _fill(bar, NAVY)
-    # teal underline
     line = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(1.05), Inches(13.333), Inches(0.06))
     _fill(line, TEAL)
     tb = slide.shapes.add_textbox(Inches(0.45), Inches(0.2), Inches(12.4), Inches(0.45))
@@ -106,7 +106,6 @@ def _set_cell(cell, text, *, size=11, bold=False, color=INK, fill=None, align=PP
     _font(r, size=size, bold=bold, color=color)
     if fill is not None:
         _cell_fill(cell, fill)
-    # vertical center
     cell.vertical_anchor = MSO_ANCHOR.MIDDLE
 
 
@@ -121,7 +120,6 @@ def _table(slide, left, top, width, height, data, col_widths, *, header=True):
             is_h = header and r == 0
             fill = NAVY if is_h else (ROW_B if r % 2 else ROW_A)
             color = WHITE if is_h else INK
-            # highlight India / YES cells lightly via bold already
             _set_cell(
                 table.cell(r, c),
                 val,
@@ -134,13 +132,34 @@ def _table(slide, left, top, width, height, data, col_widths, *, header=True):
     return shape
 
 
-def _kpi(slide, left, top, value, label, *, accent=TEAL):
-    card = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left, top, Inches(2.85), Inches(1.15))
+def _kpi(slide, left, top, value, label, *, accent=TEAL, w=2.0, h=1.2):
+    card = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left, top, Inches(w), Inches(h))
     _fill(card, WHITE)
     card.line.color.rgb = accent
     card.line.width = Pt(1.25)
-    _textbox(slide, left, top + Inches(0.15), Inches(2.85), Inches(0.5), value, size=22, bold=True, color=accent, align=PP_ALIGN.CENTER)
-    _textbox(slide, left, top + Inches(0.65), Inches(2.85), Inches(0.4), label, size=11, color=MUTED, align=PP_ALIGN.CENTER)
+    _textbox(slide, left, top + Inches(0.18), Inches(w), Inches(0.5), value, size=22, bold=True, color=accent, align=PP_ALIGN.CENTER)
+    _textbox(slide, left, top + Inches(0.7), Inches(w), Inches(0.4), label, size=11, color=MUTED, align=PP_ALIGN.CENTER)
+
+
+def _style_chart(chart, *, max_val=1.0):
+    chart.has_legend = False
+    plot = chart.plots[0]
+    plot.has_data_labels = True
+    plot.data_labels.font.size = Pt(10)
+    plot.data_labels.font.bold = True
+    plot.data_labels.number_format = "0.00"
+    try:
+        chart.value_axis.maximum_scale = max_val
+        chart.value_axis.minimum_scale = 0
+        chart.value_axis.has_major_gridlines = True
+    except Exception:
+        pass
+    try:
+        series = chart.series[0]
+        series.format.fill.solid()
+        series.format.fill.fore_color.rgb = TEAL
+    except Exception:
+        pass
 
 
 def build() -> list[Path]:
@@ -153,142 +172,102 @@ def build() -> list[Path]:
     s = prs.slides.add_slide(blank)
     bg = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(7.5))
     _fill(bg, NAVY)
-    # diagonal teal panel
     panel = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(5.6), Inches(13.333), Inches(1.9))
     _fill(panel, TEAL)
-    _textbox(s, Inches(0.7), Inches(1.8), Inches(11.5), Inches(0.5), "GLAUCO  ·  Dataset Review", size=16, bold=True, color=TEAL_LT)
-    _textbox(s, Inches(0.7), Inches(2.35), Inches(11.5), Inches(1.0), "External Fundus Datasets — Review & Adoption", size=32, bold=True, color=WHITE)
+    _textbox(s, Inches(0.7), Inches(1.8), Inches(11.5), Inches(0.5), "GLAUCO  ·  Glaucoma screening only", size=16, bold=True, color=TEAL_LT)
+    _textbox(s, Inches(0.7), Inches(2.35), Inches(11.5), Inches(1.0), "From datasets → methods → metrics", size=32, bold=True, color=WHITE)
     _textbox(
         s,
         Inches(0.7),
         Inches(3.5),
         Inches(11.5),
         Inches(0.8),
-        "Disease · modality · geography · zero-shot external · ACRIMA adaptation\nAdoption recommendation for GLAUCO (keep GHOTA on DR data only).",
+        "Disease · datasets · classes · problem · methodology · results (sens / spec / F1 / AUC)\nPeak packs for edge handoff",
         size=15,
         color=RGBColor(0xC8, 0xD8, 0xDE),
     )
-    _textbox(s, Inches(0.7), Inches(6.05), Inches(11.5), Inches(0.9), "OCT / Fundus AI  ·  Supervisor briefing  ·  On disk & experimented", size=14, bold=True, color=WHITE)
+    _textbox(s, Inches(0.7), Inches(6.05), Inches(11.5), Inches(0.9), "Supervisor briefing  ·  Speak in this order", size=14, bold=True, color=WHITE)
 
-    # ========== 2 AGENDA ==========
+    # ========== 2 AGENDA / HOW TO START ==========
     s = prs.slides.add_slide(blank)
     _bg(s)
-    _banner(s, "Agenda", "What we checked · what we measured · what we recommend")
+    _banner(s, "How to start — talk order", "Say each block once · then land on graphs")
     items = [
-        ("01", "Scope", "Candidate public sets — disease, modality, and product fit"),
-        ("02", "Specs & India", "Size, site, and which cohort is Indian"),
-        ("03", "Experiments", "AIROGS fundus specialist zero-shot + ACRIMA fine-tune"),
-        ("04", "Adoption card", "Clear YES / LATER / NO for GLAUCO vs GHOTA"),
-        ("05", "Ask", "Confirm routing and standing external protocol"),
+        ("01", "Disease", "This is glaucoma — GLAUCO only (not DR / GHOTA)"),
+        ("02", "Datasets", "What we trained on · what we only tested"),
+        ("03", "Classes", "Peak = 2-class screening · GLEAM = 4-stage"),
+        ("04", "Problem", "Screen normal vs glaucoma across fundus + OCT / RNFLT"),
+        ("05", "Methodology", "Train specialists · freeze peak · external OOD tests"),
+        ("06", "Results + graphs", "Sens / Spec / Prec / Rec / F1 / Acc / AUC — then bars"),
     ]
     for i, (num, title, body) in enumerate(items):
-        y = Inches(1.4 + i * 1.05)
-        chip = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.5), y, Inches(1.1), Inches(0.85))
-        _fill(chip, NAVY)
-        _textbox(s, Inches(0.5), y + Inches(0.22), Inches(1.1), Inches(0.45), num, size=18, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
-        card = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(1.85), y, Inches(10.8), Inches(0.85))
+        col = i % 2
+        row = i // 2
+        x = Inches(0.4 + col * 6.45)
+        y = Inches(1.35 + row * 1.85)
+        chip = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, x, y, Inches(1.0), Inches(1.5))
+        _fill(chip, NAVY if i < 5 else TEAL)
+        _textbox(s, x, y + Inches(0.5), Inches(1.0), Inches(0.5), num, size=20, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
+        card = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, x + Inches(1.15), y, Inches(5.1), Inches(1.5))
         _fill(card, WHITE)
         card.line.color.rgb = TEAL_LT
-        _textbox(s, Inches(2.1), y + Inches(0.12), Inches(10.2), Inches(0.35), title, size=16, bold=True, color=NAVY)
-        _textbox(s, Inches(2.1), y + Inches(0.45), Inches(10.2), Inches(0.35), body, size=13, color=MUTED)
+        _textbox(s, x + Inches(1.35), y + Inches(0.3), Inches(4.7), Inches(0.4), title, size=18, bold=True, color=NAVY)
+        _textbox(s, x + Inches(1.35), y + Inches(0.8), Inches(4.7), Inches(0.5), body, size=13, color=MUTED)
 
-    # ========== 3 SCOPE ==========
+    # ========== 3 DISEASE ==========
     s = prs.slides.add_slide(blank)
     _bg(s)
-    _banner(s, "1  ·  Scope — disease & product routing", "All five recent links are glaucoma-side · none replace APTOS/IDRiD for DR Acc")
-    left = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.45), Inches(1.4), Inches(6.0), Inches(5.5))
+    _banner(s, "1  ·  Disease — glaucoma", "Why this product exists")
+    left = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.4), Inches(1.4), Inches(6.1), Inches(5.5))
     _fill(left, WHITE)
     left.line.color.rgb = TEAL
-    _textbox(s, Inches(0.7), Inches(1.6), Inches(5.5), Inches(0.4), "GLAUCO  (adopt here)", size=18, bold=True, color=TEAL)
+    _textbox(s, Inches(0.7), Inches(1.65), Inches(5.6), Inches(0.4), "Clinical framing", size=16, bold=True, color=TEAL)
     for i, line in enumerate(
         [
-            "ACRIMA — fundus, OD-cropped, Spain",
-            "BEH — fundus, Bangladesh Eye Hospital",
-            "RIM-ONE DL — fundus, 3 Spanish hospitals",
-            "Drishti-GS1 — fundus + OD/cup, Aravind India",
-            "BIOMISA — fundus + OCT composite (PK)",
+            "Glaucoma damages the optic nerve — often silent until late.",
+            "Screening needs high sensitivity without drowning clinics in false alarms (specificity).",
+            "Inputs we can automate: colour fundus photos + OCT / RNFLT maps.",
+            "Outcome for edge: binary score — normal vs glaucoma.",
         ]
     ):
-        _textbox(s, Inches(0.75), Inches(2.2 + i * 0.7), Inches(5.4), Inches(0.55), "▸  " + line, size=14, color=INK)
+        _textbox(s, Inches(0.7), Inches(2.3 + i * 1.0), Inches(5.6), Inches(0.85), "▸  " + line, size=14, color=INK)
 
-    right = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.4), Inches(6.0), Inches(5.5))
+    right = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.4), Inches(6.1), Inches(5.5))
     _fill(right, WHITE)
-    right.line.color.rgb = AMBER
-    _textbox(s, Inches(7.05), Inches(1.6), Inches(5.5), Inches(0.4), "GHOTA  (do not mix)", size=18, bold=True, color=AMBER)
+    right.line.color.rgb = NAVY
+    _textbox(s, Inches(7.1), Inches(1.65), Inches(5.6), Inches(0.4), "Product boundary", size=16, bold=True, color=NAVY)
     for i, line in enumerate(
         [
-            "Keep DR Acc on APTOS + IDRiD (+ OEFI fusion)",
-            "BIOMISA ‘ci-DME’ ≠ ICDR 0–4 DR grades",
-            "OCTA-500 / ROAD = future OCTA branch",
-            "DcardNet = cite only (no public data)",
-            "Rule: one disease family per product",
+            "GLAUCO = glaucoma only.",
+            "GHOTA = diabetic retinopathy (separate).",
+            "These Downloads / Kaggle sets are glaucoma — they do not go into GHOTA.",
+            "Indian DR story stays on IDRiD / APTOS under GHOTA.",
         ]
     ):
-        _textbox(s, Inches(7.1), Inches(2.2 + i * 0.7), Inches(5.4), Inches(0.55), "▸  " + line, size=14, color=INK)
+        _textbox(s, Inches(7.1), Inches(2.3 + i * 1.0), Inches(5.6), Inches(0.85), "▸  " + line, size=14, color=INK)
 
-    # ========== 4 SPECS TABLE ==========
+    # ========== 4 DATASETS ==========
     s = prs.slides.add_slide(blank)
     _bg(s)
-    _banner(s, "2  ·  Dataset specs & geography", "Only Drishti-GS1 is an Indian cohort among these candidates")
-    data = [
-        ["Dataset", "Disease", "Modality", "n", "Site / region", "India?"],
-        ["Drishti-GS1", "Glaucoma", "Fundus + OD/cup GT", "101", "Aravind, Madurai", "YES"],
-        ["ACRIMA", "Glaucoma", "Fundus (OD-crop)", "705", "Valencia, Spain", "No"],
-        ["RIM-ONE DL", "Glaucoma", "Fundus (+ OD/cup)", "485", "Spain (3 hospitals)", "No"],
-        ["BEH", "Glaucoma", "Fundus", "634", "Dhaka, Bangladesh", "No (BD)"],
-        ["BIOMISA", "Glaucoma (+ macula)", "Fundus + OCT", "79 OD / 44 pts", "Pakistan (NUST)", "No (PK)"],
+    _banner(s, "2  ·  Datasets we used", "Train = learns weights  ·  External = test only (no Acc leak)")
+    fund = [
+        ["Dataset", "Modality", "Role", "In peak .pth?"],
+        ["AIROGS-light", "Fundus", "PRIMARY fundus train", "YES — fundus peak"],
+        ["Harvard-GD", "RNFLT / OCT", "PRIMARY OCT train", "YES — OCT peak"],
+        ["ACRIMA (Downloads)", "Fundus OD-crop", "Fine-tune adaptation", "Separate FT ckpt"],
+        ["Harvard-GDP / GF", "RNFLT", "Scale / bench", "No (scale)"],
+        ["GLEAM", "Fundus + OCT (+VF)", "Staging / fusion research", "No (4-class track)"],
+        ["Drishti · BEH · RIM-ONE", "Fundus", "EXTERNAL test only", "No — never train"],
+        ["BIOMISA", "Fundus + OCT", "Cataloged; later", "No"],
     ]
     _table(
         s,
         Inches(0.35),
-        Inches(1.4),
+        Inches(1.3),
         Inches(12.6),
-        Inches(3.6),
-        data,
-        [Inches(1.9), Inches(2.1), Inches(2.5), Inches(1.5), Inches(2.6), Inches(2.0)],
-    )
-    note = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.35), Inches(5.3), Inches(12.6), Inches(1.7))
-    _fill(note, WHITE)
-    note.line.color.rgb = GREEN
-    _textbox(s, Inches(0.55), Inches(5.45), Inches(12.2), Inches(0.35), "Indian framing for supervisors", size=14, bold=True, color=GREEN)
-    _textbox(
-        s,
-        Inches(0.55),
-        Inches(5.9),
-        Inches(12.2),
-        Inches(0.9),
-        "• Indian glaucoma (this batch): Drishti-GS1 only — Aravind Eye Hospital, Madurai.\n"
-        "• Indian DR (already on GHOTA): IDRiD + APTOS — separate product track.\n"
-        "• South Asia externals: BEH (BD), BIOMISA (PK). EU Acc/adaptation: ACRIMA + RIM-ONE.",
-        size=13,
-        color=INK,
-    )
-
-    # ========== 5 EXPERIMENTS ==========
-    s = prs.slides.add_slide(blank)
-    _bg(s)
-    _banner(s, "3  ·  Experiments — AIROGS fundus specialist", "Model A: zero-shot external  ·  Model B: fine-tune on ACRIMA train")
-    _kpi(s, Inches(0.4), Inches(1.35), "0.97", "AIROGS in-domain AUC", accent=TEAL)
-    _kpi(s, Inches(3.5), Inches(1.35), "0.95", "Drishti official-test AUC", accent=GREEN)
-    _kpi(s, Inches(6.6), Inches(1.35), "0.997", "ACRIMA after FT AUC", accent=TEAL)
-    _kpi(s, Inches(9.7), Inches(1.35), "~0.57", "OD-crop zero-shot AUC", accent=RED)
-
-    exp = [
-        ["Dataset", "n", "Zero-shot AUC", "After ACRIMA FT", "Interpretation"],
-        ["Drishti full (India)", "101", "0.890", "0.886", "Transfers — use as Indian external"],
-        ["Drishti official test", "51", "0.951", "0.939", "Strong Acc on official split"],
-        ["BEH", "634", "0.782", "0.774", "Usable South-Asia site shift"],
-        ["ACRIMA", "705 / 141 test", "0.578", "0.997", "OD-crop gap; use for adaptation"],
-        ["RIM-ONE hospital OOD", "174", "0.567", "0.513", "Hard multi-site stress test"],
-    ]
-    _table(
-        s,
-        Inches(0.35),
-        Inches(2.75),
-        Inches(12.6),
-        Inches(3.5),
-        exp,
-        [Inches(2.6), Inches(1.5), Inches(2.0), Inches(2.2), Inches(4.3)],
+        Inches(5.0),
+        fund,
+        [Inches(3.4), Inches(2.4), Inches(3.6), Inches(3.2)],
     )
     _textbox(
         s,
@@ -296,63 +275,305 @@ def build() -> list[Path]:
         Inches(6.5),
         Inches(12.5),
         Inches(0.6),
-        "Why ACRIMA / RIM-ONE fail zero-shot: optic-disc crops vs AIROGS full-field fundus — domain gap, not a label bug.",
+        "Say aloud: “Peak fundus Acc is AIROGS. Peak OCT Acc is Harvard-GD. Drishti/BEH/RIM-ONE prove transfer — they never trained the peak Acc.”",
         size=13,
         bold=True,
         color=MUTED,
     )
 
-    # ========== 6 Adoption card ==========
+    # ========== 5 CLASSES ==========
     s = prs.slides.add_slide(blank)
     _bg(s)
-    _banner(s, "4  ·  Adoption decision", "What we recommend adding to the GLAUCO pipeline")
-    hire = [
-        ["Dataset", "Adopt?", "Role", "Product"],
-        ["Drishti-GS1", "YES", "Indian external Acc + ONH/CDR story", "GLAUCO"],
-        ["BEH", "YES (light)", "South-Asia site-shift external", "GLAUCO"],
-        ["ACRIMA", "YES", "OD-crop adaptation / fine-tune data", "GLAUCO"],
-        ["RIM-ONE DL", "YES", "Hard by-hospital domain-shift bench", "GLAUCO"],
-        ["BIOMISA", "LATER", "Tiny OD n; optional fundus↔OCT sandbox", "GLAUCO later"],
-        ["Any → GHOTA/DR", "NO", "Wrong disease / wrong label scheme", "Keep out"],
+    _banner(s, "3  ·  Classes", "What the model outputs")
+    cls_rows = [
+        ["Setting", "Classes", "Labels", "Where"],
+        ["Peak fundus pack (edge)", "2", "normal / glaucoma", "glauco_fundus_peak.pth"],
+        ["Peak OCT RNFLT (edge)", "2", "normal / glaucoma", "glauco_oct_rnflt_edge.pth"],
+        ["GLEAM staging / fusion", "4", "normal → early → mid → adv", "Research track"],
+        ["3-class option", "3", "normal / early / advanced", "If supervisors require staging"],
     ]
     _table(
         s,
         Inches(0.35),
-        Inches(1.35),
+        Inches(1.4),
         Inches(12.6),
-        Inches(4.2),
-        hire,
-        [Inches(2.4), Inches(1.8), Inches(5.6), Inches(2.8)],
+        Inches(3.2),
+        cls_rows,
+        [Inches(3.4), Inches(1.4), Inches(4.0), Inches(3.8)],
     )
-    box = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.35), Inches(5.8), Inches(12.6), Inches(1.3))
-    _fill(box, NAVY)
+    box = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.35), Inches(5.0), Inches(12.6), Inches(2.0))
+    _fill(box, WHITE)
+    box.line.color.rgb = TEAL
+    _textbox(s, Inches(0.55), Inches(5.2), Inches(12.2), Inches(0.4), "Defense line", size=14, bold=True, color=TEAL)
     _textbox(
         s,
         Inches(0.55),
-        Inches(6.05),
+        Inches(5.7),
         Inches(12.2),
-        Inches(0.9),
-        "One-line recommendation: Adopt Drishti, BEH, ACRIMA, and RIM-ONE for GLAUCO external / adaptation.\n"
-        "Do not fold them into the DR product. BIOMISA can wait.",
-        size=15,
-        bold=True,
-        color=WHITE,
+        Inches(1.1),
+        "Deploy pack is binary screening (glaucoma vs normal) — clinical Acc target for edge.\n"
+        "We also trained 4-class staging on GLEAM. Three-class is possible; binary is what we froze for the .pth handoff.",
+        size=14,
+        color=INK,
     )
 
-    # ========== 7 SCRIPT ==========
+    # ========== 6 PROBLEM ==========
     s = prs.slides.add_slide(blank)
     _bg(s)
-    _banner(s, "5  ·  Speaking points (2–3 minutes)", "Say this analysis; pause on the bold numbers")
+    _banner(s, "4  ·  Problem", "What we set out to solve")
+    probs = [
+        ("Screening goal", "Detect glaucoma from fundus and/or OCT-derived RNFLT with measurable Sens / Spec."),
+        ("Train vs test honesty", "Primary Acc on AIROGS (fundus) + Harvard-GD (OCT). Externals never touch peak Acc."),
+        ("Domain shift", "OD-crop sets (ACRIMA / RIM-ONE) break full-field models — need adaptation, not fake zero-shot."),
+        ("Edge handoff", "Ship .pth + architecture + params + memory + full metric card for the deploy team."),
+    ]
+    for i, (h, body) in enumerate(probs):
+        y = Inches(1.35 + i * 1.35)
+        tag = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.45), y, Inches(2.6), Inches(1.1))
+        _fill(tag, TEAL if i % 2 == 0 else NAVY)
+        _textbox(s, Inches(0.55), y + Inches(0.35), Inches(2.4), Inches(0.5), h, size=14, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
+        card = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(3.25), y, Inches(9.6), Inches(1.1))
+        _fill(card, WHITE)
+        card.line.color.rgb = RGBColor(0xD0, 0xDC, 0xE0)
+        _textbox(s, Inches(3.5), y + Inches(0.35), Inches(9.2), Inches(0.5), body, size=15, color=INK)
+
+    # ========== 7 METHODOLOGY ==========
+    s = prs.slides.add_slide(blank)
+    _bg(s)
+    _banner(s, "5  ·  Methodology", "How we built and tested")
+    steps = [
+        ("A", "Catalog", "Normalize Downloads / Kaggle into GLAUCO CSVs (path + label)."),
+        ("B", "Train fundus", "RETFound-CFP on AIROGS-light → peak fundus Acc."),
+        ("C", "Train OCT", "EfficientNet-B0 on Harvard-GD RNFLT → edge OCT Acc."),
+        ("D", "Adapt", "Fine-tune ACRIMA for OD-crop domain (separate ckpt)."),
+        ("E", "External eval", "Zero-shot on Drishti / BEH / ACRIMA / RIM-ONE — report Sens/Spec/AUC."),
+        ("F", "Export", "Freeze glauco_edge_v1 .pth + model card (params, memory, metrics)."),
+    ]
+    for i, (num, title, body) in enumerate(steps):
+        col = i % 3
+        row = i // 3
+        x = Inches(0.4 + col * 4.25)
+        y = Inches(1.4 + row * 2.7)
+        card = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, x, y, Inches(4.0), Inches(2.4))
+        _fill(card, WHITE)
+        card.line.color.rgb = TEAL
+        chip = s.shapes.add_shape(MSO_SHAPE.OVAL, x + Inches(0.25), y + Inches(0.3), Inches(0.7), Inches(0.7))
+        _fill(chip, NAVY)
+        _textbox(s, x + Inches(0.25), y + Inches(0.42), Inches(0.7), Inches(0.45), num, size=16, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
+        _textbox(s, x + Inches(1.1), y + Inches(0.4), Inches(2.7), Inches(0.45), title, size=16, bold=True, color=NAVY)
+        _textbox(s, x + Inches(0.3), y + Inches(1.2), Inches(3.4), Inches(0.95), body, size=13, color=INK)
+
+    # ========== 8 RESULTS — METRIC CARDS ==========
+    s = prs.slides.add_slide(blank)
+    _bg(s)
+    _banner(s, "6  ·  Results — peak metrics", "This is the Sens / Spec / Prec / Rec / F1 / Acc / AUC block")
+
+    _textbox(s, Inches(0.4), Inches(1.25), Inches(12.5), Inches(0.35), "Fundus peak · AIROGS holdout (glauco_fundus_peak.pth)", size=14, bold=True, color=NAVY)
+    metrics_f = [
+        ("0.920", "Accuracy", TEAL),
+        ("0.920", "Precision", TEAL),
+        ("0.920", "Recall / Sens", GREEN),
+        ("0.920", "Specificity", GREEN),
+        ("0.920", "F1", TEAL),
+        ("0.969", "AUC", NAVY),
+    ]
+    for i, (val, lab, acc) in enumerate(metrics_f):
+        _kpi(s, Inches(0.35 + i * 2.15), Inches(1.65), val, lab, accent=acc, w=2.0, h=1.15)
+
+    _textbox(s, Inches(0.4), Inches(3.05), Inches(12.5), Inches(0.35), "OCT peak · Harvard-GD test (glauco_oct_rnflt_edge.pth)", size=14, bold=True, color=NAVY)
+    metrics_o = [
+        ("0.830", "Accuracy", TEAL),
+        ("0.886", "Precision", TEAL),
+        ("0.765", "Recall / Sens", GREEN),
+        ("0.898", "Specificity", GREEN),
+        ("0.821", "F1", TEAL),
+        ("0.913", "AUC", NAVY),
+    ]
+    for i, (val, lab, acc) in enumerate(metrics_o):
+        _kpi(s, Inches(0.35 + i * 2.15), Inches(3.45), val, lab, accent=acc, w=2.0, h=1.15)
+
+    note = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.35), Inches(4.9), Inches(12.6), Inches(2.1))
+    _fill(note, WHITE)
+    note.line.color.rgb = TEAL
+    _textbox(s, Inches(0.55), Inches(5.1), Inches(12.2), Inches(0.35), "How to say it", size=14, bold=True, color=TEAL)
+    _textbox(
+        s,
+        Inches(0.55),
+        Inches(5.55),
+        Inches(12.2),
+        Inches(1.2),
+        "Fundus: Acc / Sens / Spec / F1 all ≈ 0.92, AUC 0.97 on holdout — balanced binary screen.\n"
+        "OCT edge: lighter model (4M params, ~15 MB) — Acc 0.83, Spec 0.90, Sens 0.77, AUC 0.91.\n"
+        "Extra clinical knob: fundus Sens @ 95% Spec = 0.83 (holdout).",
+        size=14,
+        color=INK,
+    )
+
+    # ========== 9 GRAPHS — EXTERNAL AUC ==========
+    s = prs.slides.add_slide(blank)
+    _bg(s)
+    _banner(s, "7  ·  Graphs — external fundus AUC", "Same peak fundus .pth · zero-shot (no retraining)")
+
+    chart_data = CategoryChartData()
+    chart_data.categories = ["AIROGS\nholdout", "Drishti\nIndia", "Drishti\nofficial", "BEH", "ACRIMA\nOD-crop", "RIM-ONE\nhospital"]
+    chart_data.add_series("AUC", (0.969, 0.890, 0.951, 0.782, 0.578, 0.567))
+    chart = s.shapes.add_chart(
+        XL_CHART_TYPE.COLUMN_CLUSTERED,
+        Inches(0.4),
+        Inches(1.3),
+        Inches(8.2),
+        Inches(5.5),
+        chart_data,
+    ).chart
+    _style_chart(chart, max_val=1.05)
+
+    side = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(8.9), Inches(1.4), Inches(4.0), Inches(5.4))
+    _fill(side, WHITE)
+    side.line.color.rgb = NAVY
+    _textbox(s, Inches(9.1), Inches(1.65), Inches(3.6), Inches(0.4), "Read the graph", size=16, bold=True, color=NAVY)
+    for i, line in enumerate(
+        [
+            "In-domain (AIROGS): ~0.97",
+            "India (Drishti): 0.89–0.95 — transfers",
+            "BEH site-shift: ~0.78 — usable",
+            "OD-crop zero-shot: ~0.57 — expected fail",
+            "Fix for OD-crop: ACRIMA FT → AUC 0.997",
+            "RIM-ONE stays hard multi-site bench",
+        ]
+    ):
+        _textbox(s, Inches(9.15), Inches(2.3 + i * 0.65), Inches(3.55), Inches(0.55), "•  " + line, size=12, color=INK)
+
+    # ========== 10 GRAPHS — METRIC BARS FUNDUS vs OCT ==========
+    s = prs.slides.add_slide(blank)
+    _bg(s)
+    _banner(s, "8  ·  Graphs — fundus vs OCT screening metrics", "Side-by-side on the six headline numbers")
+
+    chart_data2 = CategoryChartData()
+    chart_data2.categories = ["Acc", "Prec", "Sens", "Spec", "F1", "AUC"]
+    chart_data2.add_series("Fundus (AIROGS)", (0.920, 0.920, 0.920, 0.920, 0.920, 0.969))
+    chart_data2.add_series("OCT (Harvard-GD)", (0.830, 0.886, 0.765, 0.898, 0.821, 0.913))
+    chart2 = s.shapes.add_chart(
+        XL_CHART_TYPE.COLUMN_CLUSTERED,
+        Inches(0.4),
+        Inches(1.3),
+        Inches(12.5),
+        Inches(5.0),
+        chart_data2,
+    ).chart
+    chart2.has_legend = True
+    chart2.legend.position = XL_LEGEND_POSITION.BOTTOM
+    chart2.legend.include_in_layout = False
+    try:
+        chart2.value_axis.maximum_scale = 1.05
+        chart2.value_axis.minimum_scale = 0
+    except Exception:
+        pass
+    try:
+        chart2.series[0].format.fill.solid()
+        chart2.series[0].format.fill.fore_color.rgb = TEAL
+        chart2.series[1].format.fill.solid()
+        chart2.series[1].format.fill.fore_color.rgb = NAVY
+    except Exception:
+        pass
+    _textbox(
+        s,
+        Inches(0.5),
+        Inches(6.5),
+        Inches(12.3),
+        Inches(0.6),
+        "Fundus = accuracy peak (heavy). OCT = edge-friendly (light). Both binary · both ready as .pth packs.",
+        size=13,
+        bold=True,
+        color=MUTED,
+    )
+
+    # ========== 11 EXTERNAL TABLE (SENS/SPEC DETAIL) ==========
+    s = prs.slides.add_slide(blank)
+    _bg(s)
+    _banner(s, "9  ·  External table — Sens / Spec detail", "Zero-shot peak fundus model on Downloads / Kaggle sets")
+    exp = [
+        ["Dataset", "n", "AUC", "Acc", "Sens", "Spec", "Takeaway"],
+        ["Drishti full (India)", "101", "0.890", "0.812", "0.786", "0.871", "Indian external — adopt"],
+        ["Drishti official test", "51", "0.951", "0.863", "0.816", "1.000", "Strong on official split"],
+        ["BEH", "634", "0.782", "0.793", "0.585", "0.870", "South-Asia site shift"],
+        ["ACRIMA OD-crop", "705", "0.578", "0.452", "0.045", "0.974", "FT data — not zero-shot"],
+        ["RIM-ONE hospital", "174", "0.567", "0.690", "0.071", "0.983", "Hard multi-site bench"],
+    ]
+    _table(
+        s,
+        Inches(0.25),
+        Inches(1.35),
+        Inches(12.8),
+        Inches(4.2),
+        exp,
+        [Inches(2.5), Inches(0.9), Inches(1.1), Inches(1.1), Inches(1.1), Inches(1.1), Inches(5.0)],
+    )
+    _textbox(
+        s,
+        Inches(0.4),
+        Inches(5.8),
+        Inches(12.5),
+        Inches(1.2),
+        "After ACRIMA fine-tune: ACRIMA test AUC 0.997 · Acc 0.972 · Sens@95%Spec 0.987.\n"
+        "Drishti / BEH stay strong after FT; RIM-ONE hospital OOD still hard — that is the stress test.",
+        size=14,
+        color=INK,
+    )
+
+    # ========== 12 PEAK PACKS ==========
+    s = prs.slides.add_slide(blank)
+    _bg(s)
+    _banner(s, "10  ·  Peak packs for edge", "What we hand the deploy team")
+    left = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.4), Inches(1.35), Inches(6.1), Inches(5.6))
+    _fill(left, WHITE)
+    left.line.color.rgb = TEAL
+    head = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.4), Inches(1.35), Inches(6.1), Inches(0.65))
+    _fill(head, TEAL)
+    _textbox(s, Inches(0.4), Inches(1.48), Inches(6.1), Inches(0.4), "FUNDUS peak", size=18, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
+    for i, line in enumerate(
+        [
+            "File: glauco_fundus_peak.pth",
+            "Train: AIROGS-light · 2 classes",
+            "Arch: RETFound-CFP · 303 M params",
+            "Weights ~1157 MB · peak CUDA ~2.3 GB",
+            "Holdout: Acc 0.92 · AUC 0.97",
+            "Full card: sens/spec/prec/rec/F1",
+        ]
+    ):
+        _textbox(s, Inches(0.65), Inches(2.25 + i * 0.7), Inches(5.6), Inches(0.55), "▸  " + line, size=14, color=INK)
+
+    right = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.35), Inches(6.1), Inches(5.6))
+    _fill(right, WHITE)
+    right.line.color.rgb = NAVY
+    head2 = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(6.8), Inches(1.35), Inches(6.1), Inches(0.65))
+    _fill(head2, NAVY)
+    _textbox(s, Inches(6.8), Inches(1.48), Inches(6.1), Inches(0.4), "OCT peak (edge-friendly)", size=18, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
+    for i, line in enumerate(
+        [
+            "File: glauco_oct_rnflt_edge.pth",
+            "Train: Harvard-GD · 2 classes",
+            "Arch: EfficientNet-B0 · 4.0 M params",
+            "Weights ~15.5 MB · peak CUDA ~43 MB",
+            "Test: Acc 0.83 · AUC 0.913",
+            "Full card: sens/spec/prec/rec/F1",
+        ]
+    ):
+        _textbox(s, Inches(7.05), Inches(2.25 + i * 0.7), Inches(5.6), Inches(0.55), "▸  " + line, size=14, color=INK)
+
+    # ========== 13 SPEAKING SCRIPT ==========
+    s = prs.slides.add_slide(blank)
+    _bg(s)
+    _banner(s, "11  ·  Speak this (2–3 min)", "One sentence per block — then open the graphs")
     points = [
-        ("Disease", "All five are glaucoma (or glaucoma + macular). Not DR Acc packs → GLAUCO only."),
-        ("Modality", "Four colour-fundus. BIOMISA = fundus + OCT but small OD cohort (~44 pts)."),
-        ("India", "Only Drishti-GS1 is Indian — Aravind Madurai, 101 images with OD/cup GT."),
-        ("Zero-shot", "AIROGS AUC 0.97 → Drishti 0.89–0.95 · BEH 0.78 · ACRIMA/RIM-ONE ~0.57 (OD-crop gap)."),
-        ("Adaptation", "Fine-tune on ACRIMA → test AUC 0.997. Use ACRIMA for fine-tune; RIM-ONE as hard OOD."),
-        ("Ask", "Confirm adoption list + keep GHOTA on APTOS/IDRiD/OEFI. OCTA-500/ROAD when access lands."),
+        ("Start", "These are glaucoma datasets under GLAUCO — not DR."),
+        ("Datasets", "Train: AIROGS fundus + Harvard-GD OCT. Externals: Drishti, BEH, ACRIMA, RIM-ONE."),
+        ("Classes", "Peak packs are 2-class: normal vs glaucoma."),
+        ("Problem", "Binary screening with honest train/test split + domain-shift awareness."),
+        ("Method", "Specialists → external OOD → adapt OD-crop → export .pth + metric card."),
+        ("Results", "Fundus AUC 0.97 · OCT AUC 0.91 · Drishti 0.89–0.95 — then show the bars."),
     ]
     for i, (h, body) in enumerate(points):
-        y = Inches(1.35 + i * 0.9)
+        y = Inches(1.3 + i * 0.9)
         tag = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.45), y, Inches(2.0), Inches(0.7))
         _fill(tag, TEAL if i < 5 else NAVY)
         _textbox(s, Inches(0.45), y + Inches(0.18), Inches(2.0), Inches(0.4), h, size=13, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
@@ -361,68 +582,21 @@ def build() -> list[Path]:
         card.line.color.rgb = RGBColor(0xD0, 0xDC, 0xE0)
         _textbox(s, Inches(2.85), y + Inches(0.18), Inches(9.8), Inches(0.45), body, size=13, color=INK)
 
-    # ========== 8 NEXT / GET ==========
-    s = prs.slides.add_slide(blank)
-    _bg(s)
-    _banner(s, "6  ·  Status — get / test / next", "Already on disk for this talk · optional OCTA later")
-    cols = [
-        (
-            "Already have",
-            GREEN,
-            [
-                "ACRIMA, BEH, RIM-ONE, Drishti, BIOMISA",
-                "External catalogs built",
-                "Zero-shot + ACRIMA FT results",
-                "No IIIT register needed",
-            ],
-        ),
-        (
-            "Show / test",
-            TEAL,
-            [
-                "This deck + Showcase 5b/5c",
-                "External eval script (AIROGS → candidate sets)",
-                "ACRIMA-FT → Drishti eval",
-                "Memorize: 0.97 · 0.95 · 0.997 · 0.57",
-            ],
-        ),
-        (
-            "Optional next",
-            AMBER,
-            [
-                "OCTA-500 / ROAD access",
-                "Multi-site FT incl. RIM-ONE",
-                "Standing Drishti/BEH externals",
-                "Copy checkpoints to other PC",
-            ],
-        ),
-    ]
-    for i, (title, color, bullets) in enumerate(cols):
-        x = Inches(0.4 + i * 4.25)
-        card = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, x, Inches(1.4), Inches(4.0), Inches(5.4))
-        _fill(card, WHITE)
-        card.line.color.rgb = color
-        head = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, Inches(1.4), Inches(4.0), Inches(0.7))
-        _fill(head, color)
-        _textbox(s, x, Inches(1.55), Inches(4.0), Inches(0.45), title, size=16, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
-        for j, b in enumerate(bullets):
-            _textbox(s, x + Inches(0.25), Inches(2.4 + j * 0.9), Inches(3.5), Inches(0.7), "•  " + b, size=14, color=INK)
-
-    # ========== 9 CLOSING ==========
+    # ========== 14 CLOSE ==========
     s = prs.slides.add_slide(blank)
     bg = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(7.5))
     _fill(bg, NAVY)
     stripe = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(0.2), Inches(7.5))
     _fill(stripe, TEAL)
-    _textbox(s, Inches(0.8), Inches(2.0), Inches(11.5), Inches(0.5), "Decision we need", size=16, bold=True, color=TEAL_LT)
+    _textbox(s, Inches(0.8), Inches(2.0), Inches(11.5), Inches(0.5), "Ask", size=16, bold=True, color=TEAL_LT)
     _textbox(
         s,
         Inches(0.8),
         Inches(2.6),
         Inches(11.5),
         Inches(1.8),
-        "Approve adoption of Drishti · BEH · ACRIMA · RIM-ONE\nfor GLAUCO external / adaptation — keep GHOTA on DR data only.",
-        size=26,
+        "Confirm binary edge packs:\nfundus = AIROGS · OCT = Harvard-GD · externals stay test-only",
+        size=24,
         bold=True,
         color=WHITE,
     )
@@ -432,7 +606,7 @@ def build() -> list[Path]:
         Inches(5.0),
         Inches(11.5),
         Inches(1.2),
-        "Detail docs: GLAUCO_EXTERNAL_FUNDUS_BRIEF.md  ·  EXTERNAL_FUNDUS_RESULTS.md  ·  EXTERNAL_FUNDUS_SPECS.md",
+        "Detail: docs/GLAUCO_DATASETS_USED.md  ·  docs/GLAUCO_EDGE_METRICS.md  ·  exports/glauco_edge/",
         size=14,
         color=RGBColor(0xC8, 0xD8, 0xDE),
     )

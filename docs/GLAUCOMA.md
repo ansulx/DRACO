@@ -2,6 +2,18 @@
 
 Production-grade glaucoma classification extending the DRACO pipeline. Two independent single-modality specialists plus optional cross-attention fusion for paired data.
 
+## Edge handoff (peak Acc)
+
+Export packs live under `exports/glauco_edge/` — see **[GLAUCO_EDGE_METRICS.md](GLAUCO_EDGE_METRICS.md)**.
+
+```powershell
+.\.venv\Scripts\python.exe scripts/export_glauco_edge_pack.py `
+  --checkpoint checkpoints/glauco_retfound_cfp_airogs_light/best.pt `
+  --tag glauco_fundus_peak
+```
+
+Delivers `.pth` + model card: architecture, classes, params, memory, sensitivity / specificity / precision / recall / F1 / accuracy / AUC.
+
 ## Architecture decision (2026-08-29)
 
 After structured debate across four architectural personas, see [GLAUCOMA_OVERVIEW.md](GLAUCOMA_OVERVIEW.md) / [GLAUCOMA_RESULTS_2026.md](GLAUCOMA_RESULTS_2026.md).

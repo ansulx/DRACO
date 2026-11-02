@@ -1,0 +1,440 @@
+{
+  "format_version": "glauco_edge_v1",
+  "exported_at": "2026-11-02T10:50:02.517119+00:00",
+  "task": "glaucoma_binary_screening",
+  "product": "GLAUCO",
+  "source_checkpoint": "checkpoints/glauco_retfound_cfp_airogs_light/best.pt",
+  "run_name": "glauco_retfound_cfp_airogs_light",
+  "architecture": "retfound_cfp",
+  "modality": "fundus",
+  "num_classes": 2,
+  "class_names": [
+    "normal",
+    "glaucoma"
+  ],
+  "class_index": {
+    "0": "normal",
+    "1": "glaucoma"
+  },
+  "input": {
+    "channels": 3,
+    "height": 224,
+    "width": 224,
+    "layout": "NCHW",
+    "dtype": "float32"
+  },
+  "threshold": 0.5,
+  "model_stats": {
+    "parameters_total": 303303682,
+    "parameters_trainable": 303303682,
+    "parameters_millions": 303.304,
+    "weights_mb": 1157.012,
+    "weights_bytes": 1213214728,
+    "inference_peak_cuda_mb": 2333.96
+  },
+  "metrics_primary": {
+    "accuracy": 0.9194805194805195,
+    "precision": 0.9194805194805195,
+    "recall": 0.9194805194805195,
+    "sensitivity": 0.9194805194805195,
+    "specificity": 0.9194805194805195,
+    "f1": 0.9194805194805195,
+    "auc": 0.9686894923258559,
+    "sensitivity_at_95_spec": 0.8285714285714286
+  },
+  "metrics_by_split": {
+    "airogs_light_holdout_test": {
+      "n": 770,
+      "accuracy": 0.9194805194805195,
+      "precision": 0.9194805194805195,
+      "recall": 0.9194805194805195,
+      "sensitivity": 0.9194805194805195,
+      "specificity": 0.9194805194805195,
+      "f1": 0.9194805194805195,
+      "auc": 0.9686894923258559,
+      "average_precision": 0.9666912771913798,
+      "ppv": 0.9194805194805195,
+      "npv": 0.9194805194805195,
+      "brier": 0.07400675301103987,
+      "threshold": 0.5,
+      "sensitivity_at_85_spec": 0.9532467532467532,
+      "sensitivity_at_90_spec": 0.9272727272727272,
+      "sensitivity_at_95_spec": 0.8285714285714286,
+      "threshold_at_85_spec": 0.03879070654511452,
+      "threshold_at_90_spec": 0.33875828981399536,
+      "threshold_at_95_spec": 0.9910486936569214,
+      "confusion_matrix": [
+        [
+          354,
+          31
+        ],
+        [
+          31,
+          354
+        ]
+      ],
+      "positives": 385,
+      "negatives": 385,
+      "all": {
+        "accuracy": 0.9194805194805195,
+        "f1": 0.9194805194805195,
+        "n": 770,
+        "positives": 385,
+        "negatives": 385,
+        "auc": 0.9686894923258559,
+        "sensitivity_at_95_spec": 0.8285714285714286,
+        "threshold": 0.5,
+        "sensitivity": 0.9194805194805195,
+        "specificity": 0.9194805194805195,
+        "ppv": 0.9194805194805195,
+        "npv": 0.9194805194805195,
+        "confusion_matrix": [
+          [
+            354,
+            31
+          ],
+          [
+            31,
+            354
+          ]
+        ],
+        "average_precision": 0.9666912771913798,
+        "brier": 0.07400675301103987,
+        "sensitivity_at_85_spec": 0.9532467532467532,
+        "threshold_at_85_spec": 0.03879070654511452,
+        "sensitivity_at_90_spec": 0.9272727272727272,
+        "threshold_at_90_spec": 0.33875828981399536,
+        "threshold_at_95_spec": 0.9910486936569214,
+        "recall": 0.9194805194805195,
+        "precision": 0.9194805194805195
+      }
+    },
+    "drishti_full": {
+      "n": 101,
+      "accuracy": 0.8118811881188119,
+      "precision": 0.9322033898305084,
+      "recall": 0.7857142857142857,
+      "sensitivity": 0.7857142857142857,
+      "specificity": 0.8709677419354839,
+      "f1": 0.8527131782945736,
+      "auc": 0.8898617511520738,
+      "average_precision": 0.9390530742678618,
+      "ppv": 0.9322033898305084,
+      "npv": 0.6428571428571429,
+      "brier": 0.1845244064633231,
+      "threshold": 0.5,
+      "sensitivity_at_85_spec": 0.7857142857142857,
+      "sensitivity_at_90_spec": 0.6428571428571429,
+      "sensitivity_at_95_spec": 0.37142857142857144,
+      "threshold_at_85_spec": 0.5003321766853333,
+      "threshold_at_90_spec": 0.9938217401504517,
+      "threshold_at_95_spec": 0.9999386072158813,
+      "confusion_matrix": [
+        [
+          27,
+          4
+        ],
+        [
+          15,
+          55
+        ]
+      ],
+      "positives": 70,
+      "negatives": 31,
+      "all": {
+        "accuracy": 0.8118811881188119,
+        "f1": 0.8527131782945736,
+        "precision": 0.9322033898305084,
+        "recall": 0.7857142857142857,
+        "sensitivity": 0.7857142857142857,
+        "specificity": 0.8709677419354839,
+        "confusion_matrix": [
+          [
+            27,
+            4
+          ],
+          [
+            15,
+            55
+          ]
+        ],
+        "n": 101,
+        "positives": 70,
+        "negatives": 31,
+        "threshold": 0.5,
+        "auc": 0.8898617511520738,
+        "sensitivity_at_95_spec": 0.37142857142857144,
+        "ppv": 0.9322033898305084,
+        "npv": 0.6428571428571429,
+        "average_precision": 0.9390530742678618,
+        "brier": 0.1845244064633231,
+        "sensitivity_at_85_spec": 0.7857142857142857,
+        "threshold_at_85_spec": 0.5003321766853333,
+        "sensitivity_at_90_spec": 0.6428571428571429,
+        "threshold_at_90_spec": 0.9938217401504517,
+        "threshold_at_95_spec": 0.9999386072158813
+      }
+    },
+    "beh_external": {
+      "n": 634,
+      "accuracy": 0.7933753943217665,
+      "precision": 0.625,
+      "recall": 0.5847953216374269,
+      "sensitivity": 0.5847953216374269,
+      "specificity": 0.8704103671706264,
+      "f1": 0.6042296072507553,
+      "auc": 0.7820974322054235,
+      "average_precision": 0.6034977608768177,
+      "ppv": 0.625,
+      "npv": 0.8502109704641351,
+      "brier": 0.19004855693824316,
+      "threshold": 0.5,
+      "sensitivity_at_85_spec": 0.6374269005847953,
+      "sensitivity_at_90_spec": 0.5263157894736842,
+      "sensitivity_at_95_spec": 0.36257309941520466,
+      "threshold_at_85_spec": 0.15586775541305542,
+      "threshold_at_90_spec": 0.9196317791938782,
+      "threshold_at_95_spec": 0.9996428489685059,
+      "confusion_matrix": [
+        [
+          403,
+          60
+        ],
+        [
+          71,
+          100
+        ]
+      ],
+      "positives": 171,
+      "negatives": 463,
+      "all": {
+        "accuracy": 0.7933753943217665,
+        "f1": 0.6042296072507553,
+        "precision": 0.625,
+        "recall": 0.5847953216374269,
+        "sensitivity": 0.5847953216374269,
+        "specificity": 0.8704103671706264,
+        "confusion_matrix": [
+          [
+            403,
+            60
+          ],
+          [
+            71,
+            100
+          ]
+        ],
+        "n": 634,
+        "positives": 171,
+        "negatives": 463,
+        "threshold": 0.5,
+        "auc": 0.7820974322054235,
+        "sensitivity_at_95_spec": 0.36257309941520466,
+        "ppv": 0.625,
+        "npv": 0.8502109704641351,
+        "average_precision": 0.6034977608768177,
+        "brier": 0.19004855693824316,
+        "sensitivity_at_85_spec": 0.6374269005847953,
+        "threshold_at_85_spec": 0.15586775541305542,
+        "sensitivity_at_90_spec": 0.5263157894736842,
+        "threshold_at_90_spec": 0.9196317791938782,
+        "threshold_at_95_spec": 0.9996428489685059
+      }
+    },
+    "acrima_external": {
+      "n": 705,
+      "accuracy": 0.4524822695035461,
+      "precision": 0.6923076923076923,
+      "recall": 0.045454545454545456,
+      "sensitivity": 0.045454545454545456,
+      "specificity": 0.9741100323624595,
+      "f1": 0.08530805687203792,
+      "auc": 0.5775963518681965,
+      "average_precision": 0.6189832255741949,
+      "ppv": 0.6923076923076923,
+      "npv": 0.44329896907216493,
+      "brier": 0.5260551879598186,
+      "threshold": 0.5,
+      "sensitivity_at_85_spec": 0.21464646464646464,
+      "sensitivity_at_90_spec": 0.13383838383838384,
+      "sensitivity_at_95_spec": 0.06565656565656566,
+      "threshold_at_85_spec": 0.020033380016684532,
+      "threshold_at_90_spec": 0.08400754630565643,
+      "threshold_at_95_spec": 0.26779985427856445,
+      "confusion_matrix": [
+        [
+          301,
+          8
+        ],
+        [
+          378,
+          18
+        ]
+      ],
+      "positives": 396,
+      "negatives": 309,
+      "all": {
+        "accuracy": 0.4524822695035461,
+        "f1": 0.08530805687203792,
+        "precision": 0.6923076923076923,
+        "recall": 0.045454545454545456,
+        "sensitivity": 0.045454545454545456,
+        "specificity": 0.9741100323624595,
+        "confusion_matrix": [
+          [
+            301,
+            8
+          ],
+          [
+            378,
+            18
+          ]
+        ],
+        "n": 705,
+        "positives": 396,
+        "negatives": 309,
+        "threshold": 0.5,
+        "auc": 0.5775963518681965,
+        "sensitivity_at_95_spec": 0.06565656565656566,
+        "ppv": 0.6923076923076923,
+        "npv": 0.44329896907216493,
+        "average_precision": 0.6189832255741949,
+        "brier": 0.5260551879598186,
+        "sensitivity_at_85_spec": 0.21464646464646464,
+        "threshold_at_85_spec": 0.020033380016684532,
+        "sensitivity_at_90_spec": 0.13383838383838384,
+        "threshold_at_90_spec": 0.08400754630565643,
+        "threshold_at_95_spec": 0.26779985427856445
+      }
+    },
+    "rim_one_hospital_test": {
+      "n": 174,
+      "accuracy": 0.6896551724137931,
+      "precision": 0.6666666666666666,
+      "recall": 0.07142857142857142,
+      "sensitivity": 0.07142857142857142,
+      "specificity": 0.9830508474576272,
+      "f1": 0.12903225806451613,
+      "auc": 0.5674939467312349,
+      "average_precision": 0.4339206934131929,
+      "ppv": 0.6666666666666666,
+      "npv": 0.6904761904761905,
+      "brier": 0.29218684822197283,
+      "threshold": 0.5,
+      "sensitivity_at_85_spec": 0.25,
+      "sensitivity_at_90_spec": 0.23214285714285715,
+      "sensitivity_at_95_spec": 0.14285714285714285,
+      "threshold_at_85_spec": 0.03763042390346527,
+      "threshold_at_90_spec": 0.05031420290470123,
+      "threshold_at_95_spec": 0.15727579593658447,
+      "confusion_matrix": [
+        [
+          116,
+          2
+        ],
+        [
+          52,
+          4
+        ]
+      ],
+      "positives": 56,
+      "negatives": 118,
+      "all": {
+        "accuracy": 0.6896551724137931,
+        "f1": 0.12903225806451613,
+        "precision": 0.6666666666666666,
+        "recall": 0.07142857142857142,
+        "sensitivity": 0.07142857142857142,
+        "specificity": 0.9830508474576272,
+        "confusion_matrix": [
+          [
+            116,
+            2
+          ],
+          [
+            52,
+            4
+          ]
+        ],
+        "n": 174,
+        "positives": 56,
+        "negatives": 118,
+        "threshold": 0.5,
+        "auc": 0.5674939467312349,
+        "sensitivity_at_95_spec": 0.14285714285714285,
+        "ppv": 0.6666666666666666,
+        "npv": 0.6904761904761905,
+        "average_precision": 0.4339206934131929,
+        "brier": 0.29218684822197283,
+        "sensitivity_at_85_spec": 0.25,
+        "threshold_at_85_spec": 0.03763042390346527,
+        "sensitivity_at_90_spec": 0.23214285714285715,
+        "threshold_at_90_spec": 0.05031420290470123,
+        "threshold_at_95_spec": 0.15727579593658447
+      }
+    }
+  },
+  "train_metrics_at_best": {
+    "accuracy": 0.9363636363636364,
+    "macro_f1": 0.9363583767253492,
+    "per_class_f1": {
+      "0": 0.9369369369369369,
+      "1": 0.9357798165137615
+    },
+    "confusion_matrix": [
+      [
+        364,
+        21
+      ],
+      [
+        28,
+        357
+      ]
+    ],
+    "n": 770,
+    "f1": 0.9357798165137615,
+    "positives": 385,
+    "negatives": 385,
+    "auc": 0.9829920728622028,
+    "sensitivity_at_95_spec": 0.9246753246753247,
+    "epoch": 30,
+    "train_loss": 0.018107151091098787,
+    "lr": 9.340076784094411e-05
+  },
+  "config": {
+    "run_name": "glauco_retfound_cfp_airogs_light",
+    "modality": "fundus",
+    "binary": true,
+    "num_classes": 2,
+    "monitor": "auc",
+    "model": {
+      "name": "retfound_cfp",
+      "pretrained": false,
+      "checkpoint": "checkpoints/weights/RETFound_cfp.pth"
+    },
+    "data": {
+      "train_csv": "data/processed/glaucoma/catalogs/airogs_light_train.csv",
+      "test_csv": "data/processed/glaucoma/catalogs/airogs_light_test.csv",
+      "class_weights": "data/processed/glaucoma/stats/airogs_light_class_weights.json",
+      "image_size": 224
+    },
+    "batch_size": 16,
+    "epochs": 40,
+    "patience": 12,
+    "blr": 0.005,
+    "layer_decay": 0.65,
+    "head_warmup_epochs": 5,
+    "warmup_epochs": 10,
+    "cosine": true,
+    "min_lr": 1e-06,
+    "weight_decay": 0.05,
+    "amp": true,
+    "num_workers": 4,
+    "seed": 42,
+    "balance_classes": true
+  },
+  "artifact": {
+    "pth": "exports/glauco_edge/glauco_fundus_peak.pth",
+    "pth_file_mb": 1157.13
+  }
+}

@@ -2,6 +2,8 @@
 data/raw/
 data/processed/
 GLEAM/
+exports/**/*.pth
+exports/**/*.pt
 *.zip
 *.tar
 *.tar.gz
